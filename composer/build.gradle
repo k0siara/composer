@@ -1,8 +1,13 @@
 import com.patrykkosieradzki.composer.buildsrc.Libs
+import com.patrykkosieradzki.composer.buildsrc.Versions
 
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+}
+
+kotlin {
+    explicitApi()
 }
 
 android {
@@ -24,21 +29,29 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion Versions.compose
+        kotlinCompilerVersion Versions.kotlin
     }
 }
 
 dependencies {
+    implementation Libs.AndroidX.Lifecycle.lifeCycleViewModelKtx
+    implementation Libs.AndroidX.Lifecycle.lifeCycleRuntimeKtx
     implementation Libs.AndroidX.coreKtx
 
     implementation Libs.AndroidX.Compose.foundation
     implementation Libs.Coroutines.core
-    implementation Libs.lifecycleRuntimeKtx
 
     testImplementation Libs.JUnit.junit
     testImplementation Libs.AndroidX.Test.Ext.junit

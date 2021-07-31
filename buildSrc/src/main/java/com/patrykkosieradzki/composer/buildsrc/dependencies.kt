@@ -9,7 +9,6 @@ object Versions {
 
 object Libs {
     const val androidGradlePlugin = "com.android.tools.build:gradle:${Versions.androidGradlePlugin}"
-    const val lifecycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}"
     const val activityCompose = "androidx.activity:activity-compose:1.3.0"
     const val material = "com.google.android.material:material:1.4.0"
 
@@ -41,7 +40,8 @@ object Libs {
         }
 
         object Lifecycle {
-            const val lifeCycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1"
+            const val lifeCycleViewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
+            const val lifeCycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}"
         }
 
         object Test {
