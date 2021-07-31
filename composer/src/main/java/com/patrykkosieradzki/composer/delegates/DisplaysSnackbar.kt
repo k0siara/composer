@@ -3,6 +3,7 @@ package com.patrykkosieradzki.composer.delegates
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 data class SnackbarState(
     val isShown: Boolean = false,
@@ -27,14 +28,11 @@ class DisplaysSnackbarDelegate(
     }
     override val snackbarState: StateFlow<SnackbarState> = _snackbarState.asStateFlow()
 
-    private val currentSnackbarState: SnackbarState
-        get() = snackbarState.value
-
     override fun showSnackbar(message: String) {
-        _snackbarState.value = currentSnackbarState.copy(isShown = true, message = message)
+        _snackbarState.update { it.copy(isShown = true, message = message) }
     }
 
     override fun dismissSnackbar() {
-        _snackbarState.value = currentSnackbarState.copy(isShown = false)
+        _snackbarState.update { it.copy(isShown = false) }
     }
 }
