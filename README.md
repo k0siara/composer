@@ -1,3 +1,5 @@
+[![build](https://github.com/k0siara/composer/actions/workflows/android.yml/badge.svg?branch=master)](https://github.com/k0siara/composer/actions/workflows/android.yml)
+
 Composer
 ========
 
