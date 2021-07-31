@@ -6,5 +6,5 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "ComposerExample"
-include ':app'
+include ':composer-example'
 include ':composer'
