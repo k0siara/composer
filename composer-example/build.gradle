@@ -4,6 +4,8 @@ import com.patrykkosieradzki.composer.buildsrc.Libs
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -60,14 +62,35 @@ dependencies {
     implementation Libs.AndroidX.coreKtx
     implementation Libs.AndroidX.appCompat
     implementation Libs.material
+
+    // Compose
     implementation Libs.AndroidX.Compose.ui
+    implementation "androidx.compose.ui:ui-tooling:1.0.0"
+    implementation "androidx.compose.foundation:foundation:1.0.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07"
+    implementation Libs.AndroidX.Compose.compiler
     implementation Libs.AndroidX.Compose.material
     implementation Libs.AndroidX.Compose.toolingPreview
     implementation Libs.AndroidX.Lifecycle.lifeCycleRuntimeKtx
     implementation Libs.activityCompose
 
-    debugImplementation Libs.AndroidX.Compose.tooling
+    // Dependency injection
+    implementation "com.google.dagger:hilt-android:2.37"
+    kapt "com.google.dagger:hilt-android-compiler:2.37"
 
+
+    // Network
+    implementation Libs.SquareUp.retrofit
+    implementation Libs.SquareUp.moshiKotlin
+    implementation Libs.SquareUp.retrofitMoshiConverter
+    implementation Libs.SquareUp.moshiAdapters
+    implementation Libs.SquareUp.loggingInterceptor
+
+    // Debug
+    debugImplementation Libs.AndroidX.Compose.tooling
+    debugImplementation Libs.SquareUp.leakCanary
+
+    // Testing
     testImplementation Libs.JUnit.junit
     testImplementation Libs.AndroidX.Test.Ext.junit
     testImplementation Libs.AndroidX.Test.espressoCore

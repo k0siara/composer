@@ -21,9 +21,9 @@ fun <D : ComposerUIStateData, VM : ComposerViewModel<D>> ComposerView(
     renderOnLoading: @Composable (() -> Unit)? = null,
     renderOnRetrying: @Composable (() -> Unit)? = null,
     renderOnSwipeRefreshing: @Composable (() -> Unit)? = null,
-    renderOnSuccess: @Composable ((data: D) -> Unit)? = null,
     renderOnFailure: @Composable ((error: Throwable) -> Unit)? = null,
     renderOnSwipeRefreshFailure: @Composable ((error: Throwable) -> Unit)? = null,
+    renderOnSuccess: @Composable ((data: D) -> Unit)? = null,
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val state by lifecycleAwareState(

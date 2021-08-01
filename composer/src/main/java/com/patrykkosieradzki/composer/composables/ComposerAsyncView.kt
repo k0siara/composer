@@ -12,11 +12,11 @@ import com.patrykkosieradzki.composer.orElse
 @Composable
 fun <T> ComposerAsyncView(
     async: Async<T>,
+    hideOnFailure: Boolean = false,
     renderOnUninitialized: @Composable (() -> Unit)? = null,
     renderOnLoading: @Composable ((data: T?) -> Unit)? = null,
-    renderOnSuccess: @Composable ((data: T?) -> Unit)? = null,
     renderOnFail: @Composable ((data: T?, error: Throwable) -> Unit)? = null,
-    hideOnFailure: Boolean = false,
+    renderOnSuccess: @Composable ((data: T?) -> Unit)? = null,
 ) {
     when (async) {
         is Async.Uninitialized -> {

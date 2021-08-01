@@ -27,6 +27,7 @@ object Libs {
 
         object Compose {
             const val foundation = "androidx.compose.foundation:foundation:${Versions.compose}"
+            const val compiler = "androidx.compose.compiler:compiler:${Versions.compose}"
             const val layout = "androidx.compose.foundation:foundation-layout:${Versions.compose}"
             const val ui = "androidx.compose.ui:ui:${Versions.compose}"
             const val uiUtil = "androidx.compose.ui:ui-util:${Versions.compose}"
@@ -51,6 +52,21 @@ object Libs {
                 const val junit = "androidx.test.ext:junit:1.1.3"
             }
         }
+    }
+
+    object Koin {
+        private const val version = "3.1.2"
+        const val core = "io.insert-koin:koin-core:$version"
+        const val compose = "io.insert-koin:koin-androidx-compose:$version"
+    }
+
+    object SquareUp {
+        const val leakCanary = "com.squareup.leakcanary:leakcanary-android:2.7"
+        const val retrofit = "com.squareup.retrofit2:retrofit:2.9.0"
+        const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:1.12.0"
+        const val retrofitMoshiConverter = "com.squareup.retrofit2:converter-moshi:2.5.0"
+        const val moshiAdapters = "com.squareup.moshi:moshi-adapters:1.7.0"
+        const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:4.9.1"
     }
 
     object JUnit {
