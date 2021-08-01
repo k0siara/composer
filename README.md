@@ -3,8 +3,26 @@
 Composer
 ========
 
-Jetpack Compose State and Event Management library
+Composer is a Jetpack Compose Framework for simple state and event management. 
 
+
+First, define a ComposerViewModel and ComposerUIStateData
+```kotlin
+
+class HomeViewModel : ComposerViewModel<HomeStateData>(
+    initialState = ComposerUIState.Success(HomeStateData())
+) {
+    // ViewModel logic
+}
+
+data class HomeStateData(
+    val title: String = "Home Screen"
+) : ComposerUIStateData
+```
+
+Installation
+=======
+Comming soon to maven central
 
 License
 =======
