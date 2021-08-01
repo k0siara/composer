@@ -5,8 +5,8 @@ sealed class ComposerUIState<out T : ComposerUIStateData> {
     object Retrying : ComposerUIState<Nothing>()
     object SwipeRefreshing : ComposerUIState<Nothing>()
     data class Success<T : ComposerUIStateData>(val data: T) : ComposerUIState<T>()
-    data class Failure(val exception: Exception) : ComposerUIState<Nothing>()
-    data class SwipeRefreshFailure(val exception: Exception) : ComposerUIState<Nothing>()
+    data class Failure(val error: Throwable) : ComposerUIState<Nothing>()
+    data class SwipeRefreshFailure(val error: Throwable) : ComposerUIState<Nothing>()
 }
 
 interface ComposerUIStateData

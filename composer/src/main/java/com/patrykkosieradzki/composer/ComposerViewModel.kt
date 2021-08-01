@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 abstract class ComposerViewModel<S : ComposerUIStateData>(
-    private val initialState: ComposerUIState<S> = ComposerUIState.Loading,
+    open val initialState: ComposerUIState<S> = ComposerUIState.Loading,
 ) : ViewModel() {
     private val _uiState: MutableStateFlow<ComposerUIState<S>> by lazy {
         MutableStateFlow(initialState)

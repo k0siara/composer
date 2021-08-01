@@ -14,7 +14,7 @@ android {
     compileSdk 30
 
     defaultConfig {
-        minSdk 16
+        minSdk 21
         targetSdk 30
         versionCode 1
         versionName "1.0"
@@ -50,6 +50,7 @@ dependencies {
     implementation Libs.AndroidX.coreKtx
 
     implementation Libs.AndroidX.Compose.foundation
+    implementation Libs.AndroidX.Compose.material
     implementation Libs.Coroutines.core
 
     testImplementation Libs.JUnit.junit
