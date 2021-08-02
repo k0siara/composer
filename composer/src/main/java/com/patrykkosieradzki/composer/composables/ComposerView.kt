@@ -28,7 +28,7 @@ fun <D : ComposerUIStateData, VM : ComposerViewModel<D>> ComposerView(
     val lifecycleOwner = LocalLifecycleOwner.current
     val state by lifecycleAwareState(
         lifecycleOwner = lifecycleOwner,
-        stateFlow = viewModel.uiState,
+        flow = viewModel.uiState,
         initialState = viewModel.initialState
     )
 

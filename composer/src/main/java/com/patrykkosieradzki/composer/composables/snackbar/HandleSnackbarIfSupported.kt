@@ -20,7 +20,7 @@ fun HandleSnackbarIfSupported(
         val lifecycleOwner = LocalLifecycleOwner.current
         val snackbarState by lifecycleAwareState(
             lifecycleOwner = lifecycleOwner,
-            stateFlow = viewModel.snackbarState,
+            flow = viewModel.snackbarState,
             initialState = viewModel.initialSnackbarState
         )
 

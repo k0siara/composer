@@ -2,6 +2,8 @@ package com.patrykkosieradzki.composerexample.di
 
 import com.patrykkosieradzki.composerexample.AppConfiguration
 import com.patrykkosieradzki.composerexample.ComposerAppConfiguration
+import com.patrykkosieradzki.composerexample.navigation.ComposerNavigator
+import com.patrykkosieradzki.composerexample.navigation.ComposerNavigatorImpl
 import com.patrykkosieradzki.composerexample.repositories.CoinApiRepository
 import com.patrykkosieradzki.composerexample.repositories.CoinRepository
 import com.patrykkosieradzki.composerexample.services.CoinRankingService
@@ -70,5 +72,11 @@ object AppModule {
     @Provides
     fun provideCoinRepository(coinRankingService: CoinRankingService): CoinRepository {
         return CoinApiRepository(coinRankingService)
+    }
+
+    @Singleton
+    @Provides
+    fun provideComposerNavigator(): ComposerNavigator {
+        return ComposerNavigatorImpl()
     }
 }
