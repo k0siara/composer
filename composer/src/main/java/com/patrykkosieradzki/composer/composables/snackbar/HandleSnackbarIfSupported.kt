@@ -6,9 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
-import com.patrykkosieradzki.composer.composables.lifecycleAwareState
+import com.patrykkosieradzki.composer.utils.lifecycleAwareState
 import com.patrykkosieradzki.composer.delegates.DisplaysSnackbar
 
 @Composable

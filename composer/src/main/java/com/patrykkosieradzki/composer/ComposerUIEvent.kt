@@ -1,3 +1,0 @@
-package com.patrykkosieradzki.composer
-
-interface ComposerUIEvent

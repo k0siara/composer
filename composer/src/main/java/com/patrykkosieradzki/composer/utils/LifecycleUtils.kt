@@ -1,4 +1,4 @@
-package com.patrykkosieradzki.composer.composables
+package com.patrykkosieradzki.composer.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State

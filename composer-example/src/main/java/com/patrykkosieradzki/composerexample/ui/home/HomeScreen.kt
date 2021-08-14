@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.patrykkosieradzki.composer.composables.ComposerView
+import com.patrykkosieradzki.composer.composables.ComposerUiStateView
 import com.patrykkosieradzki.composerexample.model.Coin
 import java.math.RoundingMode
 
@@ -17,7 +17,7 @@ import java.math.RoundingMode
 fun HomeScreen(
     homeViewModel: HomeViewModel = viewModel()
 ) {
-    ComposerView(viewModel = homeViewModel) {
+    ComposerUiStateView(viewModel = homeViewModel) {
         LazyColumn {
             items(it.coins) { coin ->
                 CoinListItem(coin)
