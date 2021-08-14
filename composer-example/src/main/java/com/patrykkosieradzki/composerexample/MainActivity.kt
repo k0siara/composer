@@ -4,14 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.Scaffold
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import com.patrykkosieradzki.composer.core.ComposerLifecycleAwareFlowCollector
 import com.patrykkosieradzki.composer.navigation.ComposerNavigationHandler
 import com.patrykkosieradzki.composer.navigation.ComposerNavigator
 import com.patrykkosieradzki.composerexample.navigation.MainActions

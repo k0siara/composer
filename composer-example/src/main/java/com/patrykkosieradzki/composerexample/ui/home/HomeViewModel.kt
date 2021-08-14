@@ -1,33 +1,31 @@
 package com.patrykkosieradzki.composerexample.ui.home
 
-import androidx.lifecycle.viewModelScope
 import com.patrykkosieradzki.composer.core.ComposerUiState
 import com.patrykkosieradzki.composer.core.ComposerUiStateData
 import com.patrykkosieradzki.composer.core.ComposerViewModel
 import com.patrykkosieradzki.composerexample.model.Coin
 import com.patrykkosieradzki.composerexample.repositories.CoinRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val coinRepository: CoinRepository
-) : ComposerViewModel<HomeState>(
-    initialState = ComposerUiState.Loading
+) : ComposerViewModel<HomeStateData>(
+    initialState = ComposerUiState.Loading(HomeStateData())
 ) {
     init {
         loadCoins()
     }
 
     private fun loadCoins() {
-        viewModelScope.launch {
+        safeLaunch {
             val coins = coinRepository.getCoins()
-            updateUiState { ComposerUiState.Success(HomeState(coins = coins)) }
+            updateUiState { ComposerUiState.Success(HomeStateData(coins = coins)) }
         }
     }
 }
 
-data class HomeState(
-    val coins: List<Coin>
+data class HomeStateData(
+    val coins: List<Coin> = emptyList()
 ) : ComposerUiStateData
