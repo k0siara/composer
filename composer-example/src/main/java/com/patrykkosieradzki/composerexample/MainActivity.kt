@@ -11,6 +11,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.patrykkosieradzki.composer.navigation.ComposerNavigationHandler
 import com.patrykkosieradzki.composer.navigation.ComposerNavigator
+import com.patrykkosieradzki.composer.toast.ComposerToastHandler
+import com.patrykkosieradzki.composer.toast.ComposerToastManager
 import com.patrykkosieradzki.composerexample.navigation.MainActions
 import com.patrykkosieradzki.composerexample.ui.home.HomeScreen
 import com.patrykkosieradzki.composerexample.ui.theme.ComposerExampleTheme
@@ -23,6 +25,9 @@ class MainActivity : ComponentActivity() {
     
     @Inject
     lateinit var navigator: ComposerNavigator
+
+    @Inject
+    lateinit var toastManager: ComposerToastManager
     
     @InternalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +40,8 @@ class MainActivity : ComponentActivity() {
                     composerNavigator = navigator,
                     navHostController = navController
                 )
+
+                ComposerToastHandler(toastManager)
 
                 NavHost(
                     navController = navController,

@@ -2,6 +2,7 @@ package com.patrykkosieradzki.composer.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavHostController
 import com.patrykkosieradzki.composer.core.ComposerLifecycleAwareFlowCollector
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -10,11 +11,12 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @Composable
 fun ComposerNavigationHandler(
     composerNavigator: ComposerNavigator,
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
 ) {
     ComposerLifecycleAwareFlowCollector(
         flow = composerNavigator.navCommands,
-        lifecycleOwner = LocalLifecycleOwner.current
+        lifecycleOwner = lifecycleOwner
     ) {
         when (it) {
             is ComposerNavCommand.WithAction -> {
