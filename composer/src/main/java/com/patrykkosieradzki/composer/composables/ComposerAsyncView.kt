@@ -19,31 +19,55 @@ fun <T> ComposerAsyncView(
     renderOnSuccess: @Composable ((data: T?) -> Unit)? = null,
 ) {
     when (composerAsync) {
-        is ComposerAsync.Uninitialized -> {
-            (renderOnUninitialized.orElse(defaultUninitializedComposable))?.invoke()
-        }
-        is ComposerAsync.Loading -> {
-            if (renderOnLoading != null) {
-                renderOnLoading.invoke(composerAsync())
-            } else {
-                defaultLoadingComposable.invoke()
-            }
-        }
-        is ComposerAsync.Success -> {
-            if (renderOnSuccess != null) {
-                renderOnSuccess.invoke(composerAsync())
-            } else {
-                defaultSuccessComposable.invoke()
-            }
-        }
-        is ComposerAsync.Fail -> {
-            if (!Composer.AsyncRenderConfig.hideEveryAsyncOnFailure && !hideOnFailure) {
-                if (renderOnFail != null) {
-                    renderOnFail.invoke(composerAsync(), composerAsync.error)
-                } else {
-                    defaultFailComposable.invoke(composerAsync.error)
-                }
-            }
+        is ComposerAsync.Uninitialized -> Uninitialized(renderOnUninitialized)
+        is ComposerAsync.Loading -> Loading(renderOnLoading, composerAsync)
+        is ComposerAsync.Success -> Success(renderOnSuccess, composerAsync)
+        is ComposerAsync.Fail -> Fail(renderOnFail, composerAsync, hideOnFailure)
+    }
+}
+
+@Composable
+private fun Uninitialized(
+    renderOnUninitialized: @Composable (() -> Unit)?
+) {
+    (renderOnUninitialized.orElse(defaultUninitializedComposable))?.invoke()
+}
+
+@Composable
+private fun <T> Loading(
+    renderOnLoading: @Composable ((T?) -> Unit)?,
+    composerAsync: ComposerAsync.Loading<T>
+) {
+    if (renderOnLoading != null) {
+        renderOnLoading.invoke(composerAsync())
+    } else {
+        defaultLoadingComposable.invoke()
+    }
+}
+
+@Composable
+private fun <T> Success(
+    renderOnSuccess: @Composable ((T?) -> Unit)?,
+    composerAsync: ComposerAsync.Success<T>
+) {
+    if (renderOnSuccess != null) {
+        renderOnSuccess.invoke(composerAsync())
+    } else {
+        defaultSuccessComposable.invoke()
+    }
+}
+
+@Composable
+private fun <T> Fail(
+    renderOnFail: @Composable ((data: T?, error: Throwable) -> Unit)?,
+    composerAsync: ComposerAsync.Fail<T>,
+    hideOnFailure: Boolean
+) {
+    if (!Composer.AsyncRenderConfig.hideEveryAsyncOnFailure && !hideOnFailure) {
+        if (renderOnFail != null) {
+            renderOnFail.invoke(composerAsync(), composerAsync.error)
+        } else {
+            defaultFailComposable.invoke(composerAsync.error)
         }
     }
 }
