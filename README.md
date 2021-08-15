@@ -6,6 +6,7 @@ Composer
 Composer is a Jetpack Compose Framework for simple state and event management. 
 
 Bored of writing boilerplate code in every new Android project to handle states, events, effects, etc?
+
 Just use Composer!
 
 You're probably familiar with declaring Ui states for every screen in your app. Most of the time it was just a sealed class, for example:
