@@ -35,7 +35,7 @@ Using ComposerUiState gives you access to these predefined states for every scre
 
 This should cover most of the cases for you. If not, you can create custom states for a specific screen/case/etc.
 
-First, define a ComposerViewModel and ComposerUIStateData, that will hold your screen data, regardlress of the UiState that is has right now. 
+First, define a ComposerViewModel and ComposerUIStateData, that will hold your screen data, regardless of the UiState that is has right now. 
 
 ```kotlin
 class HomeViewModel : ComposerViewModel<HomeStateData>(
