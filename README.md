@@ -35,7 +35,9 @@ Using ComposerUiState gives you access to these predefined states for every scre
 
 This should cover most of the cases for you. If not, you can create custom states for a specific screen/case/etc.
 
-First, define a ComposerViewModel and ComposerUIStateData, that will hold your screen data, regardless of the UiState that is has right now. 
+## Quickstart
+
+First, define a ComposerViewModel and ComposerUIStateData, that will hold your screen data, regardless of the UiState that is has right now:
 
 ```kotlin
 class HomeViewModel : ComposerViewModel<HomeStateData>(
@@ -49,6 +51,106 @@ data class HomeStateData(
     val subtitle: String = "",
     val additionalInfo: String = ""
 ) : ComposerUIStateData
+```
+
+Next, create a composable function that will present the state, based on the ComposerViewModel:
+
+```kotlin
+@Composable
+fun HomeScreen(
+    homeViewModel: HomeViewModel = viewModel() // use your DI to get the ViewModel
+) {
+    ComposerUiStateView(viewModel = homeViewModel) { data ->
+        HomeScreenSuccessStateView(data)
+    }
+}
+
+@Composable
+private fun HomeScreenSuccessStateView(
+    data: HomeStateData
+) {
+    // Define your UI...
+}
+```
+
+## Updating state
+
+Now, let's say you want to change your state data and update it in your composable. How do we do that? It's easy:
+
+```kotlin
+class HomeViewModel : ComposerViewModel<HomeStateData>(
+    initialState = ComposerUiState.Loading(HomeStateData())
+) {
+    fun onButtonClicked() {
+        updateUiState { 
+            ComposerUiState.Success(
+                HomeStateData(
+                    title = "Hello, world!
+                )
+            ) 
+        }
+    }
+    
+    // or just...
+    
+    fun onSecondButtonClicked() {
+        updateUiStateToSuccess { 
+            it.copy(
+                title = "Hello, world!
+            )
+        }
+    }
+}
+```
+
+## Handling events
+
+If you're a MVI fan then you can easily handle events with composer. Just define events for your ViewModel and implement ComposerEventHandler:
+
+```kotlin
+class HomeViewModel : ComposerViewModel<HomeStateData>(
+    initialState = ComposerUiState.Loading(HomeStateData())
+), ComposerEventHandler<HomeEvent> {
+
+    override fun handleEvent(event: HomeEvent) {
+        when (event) {
+            is HomeEvent.ButtonClick -> onButtonClicked()
+        }
+    }
+
+    private fun onButtonClicked() {
+        updateUiStateToSuccess { 
+            it.copy(
+                title = "Hello, world!
+            )
+        }
+    }
+}
+
+sealed class HomeEvent : ComposerUiEvent {
+    object ButtonClick : HomeEvent()
+}
+```
+
+Then, simply use it in your composables:
+
+```kotlin
+@Composable
+private fun HomeScreenSuccessStateView(
+    data: HomeStateData,
+    eventHandler: ComposerEventHandler<HomeEvent>
+) {
+    Button(
+        onClick = { 
+            eventHandler.handleEvent(HomeEvent.ButtonClick) 
+        },
+        colors = ButtonDefaults.textButtonColors(
+            backgroundColor = Color.Red
+        )
+    ) {
+        Text("Button")
+    }
+}
 ```
 
 Installation
