@@ -1,5 +1,5 @@
 package com.patrykkosieradzki.composer.core
 
-interface ComposerEventHandler<E : ComposerUiEvent> {
+interface EventHandler<E : UiEvent> {
     fun handleEvent(event: E)
 }

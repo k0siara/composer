@@ -1,3 +1,4 @@
 package com.patrykkosieradzki.composer.core
 
-interface ComposerUiEvent
+interface UiEffect {
+}

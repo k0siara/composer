@@ -1,7 +1,7 @@
 package com.patrykkosieradzki.composer.composables
 
 import androidx.compose.runtime.Composable
-import com.patrykkosieradzki.composer.core.ComposerAsync
+import com.patrykkosieradzki.composer.core.Async
 import com.patrykkosieradzki.composer.core.Composer
 import com.patrykkosieradzki.composer.core.Composer.AsyncRenderConfig.Companion.defaultFailComposable
 import com.patrykkosieradzki.composer.core.Composer.AsyncRenderConfig.Companion.defaultLoadingComposable
@@ -11,18 +11,18 @@ import com.patrykkosieradzki.composer.utils.orElse
 
 @Composable
 fun <T> ComposerAsyncView(
-    composerAsync: ComposerAsync<T>,
+    async: Async<T>,
     hideOnFailure: Boolean = false,
     renderOnUninitialized: @Composable (() -> Unit)? = null,
     renderOnLoading: @Composable ((data: T?) -> Unit)? = null,
     renderOnFail: @Composable ((data: T?, error: Throwable) -> Unit)? = null,
     renderOnSuccess: @Composable ((data: T?) -> Unit)? = null,
 ) {
-    when (composerAsync) {
-        is ComposerAsync.Uninitialized -> Uninitialized(renderOnUninitialized)
-        is ComposerAsync.Loading -> Loading(renderOnLoading, composerAsync)
-        is ComposerAsync.Success -> Success(renderOnSuccess, composerAsync)
-        is ComposerAsync.Fail -> Fail(renderOnFail, composerAsync, hideOnFailure)
+    when (async) {
+        is Async.Uninitialized -> Uninitialized(renderOnUninitialized)
+        is Async.Loading -> Loading(renderOnLoading, async)
+        is Async.Success -> Success(renderOnSuccess, async)
+        is Async.Fail -> Fail(renderOnFail, async, hideOnFailure)
     }
 }
 
@@ -36,10 +36,10 @@ private fun Uninitialized(
 @Composable
 private fun <T> Loading(
     renderOnLoading: @Composable ((T?) -> Unit)?,
-    composerAsync: ComposerAsync.Loading<T>
+    async: Async.Loading<T>
 ) {
     if (renderOnLoading != null) {
-        renderOnLoading.invoke(composerAsync())
+        renderOnLoading.invoke(async())
     } else {
         defaultLoadingComposable.invoke()
     }
@@ -48,10 +48,10 @@ private fun <T> Loading(
 @Composable
 private fun <T> Success(
     renderOnSuccess: @Composable ((T?) -> Unit)?,
-    composerAsync: ComposerAsync.Success<T>
+    async: Async.Success<T>
 ) {
     if (renderOnSuccess != null) {
-        renderOnSuccess.invoke(composerAsync())
+        renderOnSuccess.invoke(async())
     } else {
         defaultSuccessComposable.invoke()
     }
@@ -60,14 +60,14 @@ private fun <T> Success(
 @Composable
 private fun <T> Fail(
     renderOnFail: @Composable ((data: T?, error: Throwable) -> Unit)?,
-    composerAsync: ComposerAsync.Fail<T>,
+    async: Async.Fail<T>,
     hideOnFailure: Boolean
 ) {
     if (!Composer.AsyncRenderConfig.hideEveryAsyncOnFailure && !hideOnFailure) {
         if (renderOnFail != null) {
-            renderOnFail.invoke(composerAsync(), composerAsync.error)
+            renderOnFail.invoke(async(), async.error)
         } else {
-            defaultFailComposable.invoke(composerAsync.error)
+            defaultFailComposable.invoke(async.error)
         }
     }
 }

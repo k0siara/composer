@@ -1,6 +1,5 @@
 package com.patrykkosieradzki.composerexample.di
 
-import com.patrykkosieradzki.composer.navigation.ComposerNavigator
 import com.patrykkosieradzki.composer.toast.ComposerToastManager
 import com.patrykkosieradzki.composerexample.AppConfiguration
 import com.patrykkosieradzki.composerexample.ComposerAppConfiguration
@@ -72,12 +71,6 @@ object AppModule {
     @Provides
     fun provideCoinRepository(coinRankingService: CoinRankingService): CoinRepository {
         return CoinApiRepository(coinRankingService)
-    }
-
-    @Singleton
-    @Provides
-    fun provideComposerNavigator(): ComposerNavigator {
-        return ComposerNavigator()
     }
 
     @Singleton

@@ -1,5 +1,7 @@
 package com.patrykkosieradzki.composer.composables
 
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -10,44 +12,50 @@ import com.patrykkosieradzki.composer.core.Composer.UiStateRenderConfig.Companio
 import com.patrykkosieradzki.composer.core.Composer.UiStateRenderConfig.Companion.defaultSuccessComposable
 import com.patrykkosieradzki.composer.core.Composer.UiStateRenderConfig.Companion.defaultSwipeRefreshFailureComposable
 import com.patrykkosieradzki.composer.core.Composer.UiStateRenderConfig.Companion.defaultSwipeRefreshingComposable
+import com.patrykkosieradzki.composer.utils.asLifecycleAwareState
 import com.patrykkosieradzki.composer.utils.lifecycleAwareState
 
 @Composable
-fun <D : ComposerUiStateData, VM : ComposerViewModel<D>> ComposerUiStateView(
-    viewModel: VM,
-    renderOnLoading: @Composable ((D) -> Unit)? = null,
-    renderOnRetrying: @Composable ((D) -> Unit)? = null,
-    renderOnSwipeRefreshing: @Composable ((D) -> Unit)? = null,
-    renderOnFailure: @Composable ((D, error: Throwable) -> Unit)? = null,
-    renderOnSwipeRefreshFailure: @Composable ((D, error: Throwable) -> Unit)? = null,
-    renderOnSuccess: @Composable ((data: D) -> Unit)? = null,
+fun <DATA : Any> UiStateView(
+    uiStateManager: UiStateManager<DATA>,
+    renderOnLoading: @Composable ((DATA) -> Unit)? = null,
+    renderOnRetrying: @Composable ((DATA) -> Unit)? = null,
+    renderOnSwipeRefreshing: @Composable ((DATA) -> Unit)? = null,
+    renderOnFailure: @Composable ((DATA, error: Throwable) -> Unit)? = null,
+    renderOnSwipeRefreshFailure: @Composable ((DATA, error: Throwable) -> Unit)? = null,
+    renderOnSuccess: @Composable ((data: DATA) -> Unit)? = null,
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
-    val state by lifecycleAwareState(
+    val state by uiStateManager.uiState.asLifecycleAwareState(
         lifecycleOwner = lifecycleOwner,
-        flow = viewModel.uiState,
-        initialState = viewModel.initialState
+        initialState = uiStateManager.uiState.value
     )
     val stateData = state.getData()
 
-    when (state) {
-        is ComposerUiState.Loading -> Loading(renderOnLoading, stateData)
-        is ComposerUiState.Retrying -> Retrying(renderOnRetrying, stateData)
-        is ComposerUiState.SwipeRefreshing -> SwipeRefreshing(renderOnSwipeRefreshing, stateData)
-        is ComposerUiState.Success -> Success(renderOnSuccess, stateData)
-        is ComposerUiState.Failure -> Failure(renderOnFailure, stateData, state.asFailure.error)
-        is ComposerUiState.SwipeRefreshFailure -> SwipeRefreshFailure(
-            renderOnSwipeRefreshFailure,
-            stateData,
-            state.asSwipeRefreshFailure.error
-        )
+    Crossfade(
+        targetState = state,
+        animationSpec = tween(300)
+    ) {
+        when (it) {
+            is UiState.Loading -> Loading(renderOnLoading, stateData)
+            is UiState.Retrying -> Retrying(renderOnRetrying, stateData)
+            is UiState.SwipeRefreshing -> SwipeRefreshing(renderOnSwipeRefreshing, stateData)
+            is UiState.Success -> Success(renderOnSuccess, stateData)
+            is UiState.Failure -> Failure(renderOnFailure, stateData, state.asFailure.error)
+            is UiState.SwipeRefreshFailure -> SwipeRefreshFailure(
+                renderOnSwipeRefreshFailure,
+                stateData,
+                state.asSwipeRefreshFailure.error
+            )
+        }
     }
+
 }
 
 @Composable
-private fun <D : ComposerUiStateData> Loading(
-    renderOnLoading: @Composable ((D) -> Unit)? = null,
-    uiStateData: D
+private fun <DATA : Any> Loading(
+    renderOnLoading: @Composable ((DATA) -> Unit)? = null,
+    uiStateData: DATA
 ) {
     if (renderOnLoading != null) {
         renderOnLoading.invoke(uiStateData)
@@ -57,9 +65,9 @@ private fun <D : ComposerUiStateData> Loading(
 }
 
 @Composable
-private fun <D : ComposerUiStateData> Retrying(
-    renderOnRetrying: @Composable ((D) -> Unit)? = null,
-    uiStateData: D
+private fun <DATA : Any> Retrying(
+    renderOnRetrying: @Composable ((DATA) -> Unit)? = null,
+    uiStateData: DATA
 ) {
     if (renderOnRetrying != null) {
         renderOnRetrying.invoke(uiStateData)
@@ -69,9 +77,9 @@ private fun <D : ComposerUiStateData> Retrying(
 }
 
 @Composable
-private fun <D : ComposerUiStateData> SwipeRefreshing(
-    renderOnSwipeRefreshing: @Composable ((D) -> Unit)? = null,
-    uiStateData: D
+private fun <DATA : Any> SwipeRefreshing(
+    renderOnSwipeRefreshing: @Composable ((DATA) -> Unit)? = null,
+    uiStateData: DATA
 ) {
     if (renderOnSwipeRefreshing != null) {
         renderOnSwipeRefreshing.invoke(uiStateData)
@@ -81,9 +89,9 @@ private fun <D : ComposerUiStateData> SwipeRefreshing(
 }
 
 @Composable
-private fun <D : ComposerUiStateData> Success(
-    renderOnSuccess: @Composable ((D) -> Unit)? = null,
-    uiStateData: D
+private fun <DATA : Any> Success(
+    renderOnSuccess: @Composable ((DATA) -> Unit)? = null,
+    uiStateData: DATA
 ) {
     if (renderOnSuccess != null) {
         renderOnSuccess.invoke(uiStateData)
@@ -93,7 +101,7 @@ private fun <D : ComposerUiStateData> Success(
 }
 
 @Composable
-private fun <D : ComposerUiStateData> Failure(
+private fun <D : Any> Failure(
     renderOnFailure: @Composable ((D, error: Throwable) -> Unit)? = null,
     uiStateData: D,
     error: Throwable
@@ -106,7 +114,7 @@ private fun <D : ComposerUiStateData> Failure(
 }
 
 @Composable
-private fun <D : ComposerUiStateData> SwipeRefreshFailure(
+private fun <D : Any> SwipeRefreshFailure(
     renderOnSwipeRefreshFailure: @Composable ((D, error: Throwable) -> Unit)? = null,
     uiStateData: D,
     error: Throwable

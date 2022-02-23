@@ -9,12 +9,12 @@ plugins {
 }
 
 android {
-    compileSdk 30
+    compileSdk 31
 
     defaultConfig {
         applicationId "com.patrykkosieradzki.composerexample"
         minSdk 21
-        targetSdk 30
+        targetSdk 31
         versionCode 1
         versionName "1.0"
 
@@ -65,22 +65,22 @@ dependencies {
 
     // Compose
     implementation Libs.AndroidX.Compose.ui
-    implementation "androidx.compose.ui:ui-tooling:1.0.0"
-    implementation "androidx.compose.foundation:foundation:1.0.0"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07"
+    implementation "androidx.compose.ui:ui-tooling:1.1.0"
+    implementation "androidx.compose.foundation:foundation:1.1.0"
     implementation Libs.AndroidX.Compose.compiler
     implementation Libs.AndroidX.Compose.material
     implementation Libs.AndroidX.Compose.toolingPreview
     implementation Libs.AndroidX.Lifecycle.lifeCycleRuntimeKtx
     implementation Libs.activityCompose
 
-    implementation "androidx.navigation:navigation-compose:2.4.0-alpha05"
-    implementation "androidx.hilt:hilt-navigation-compose:1.0.0-alpha03"
+    implementation "androidx.fragment:fragment-ktx:1.4.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-alpha02"
 
     // Dependency injection
     implementation "com.google.dagger:hilt-android:2.37"
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.4.1'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.4.1'
     kapt "com.google.dagger:hilt-android-compiler:2.37"
-
 
     // Network
     implementation Libs.SquareUp.retrofit

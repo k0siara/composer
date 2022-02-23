@@ -17,6 +17,10 @@ object Libs {
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
     }
 
+    object Others {
+        const val liveEvent = "com.github.hadilq.liveevent:liveevent:1.2.0"
+    }
+
     object Coroutines {
         private const val version = "1.5.1"
         const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"

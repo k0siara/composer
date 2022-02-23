@@ -54,6 +54,8 @@ dependencies {
     implementation Libs.AndroidX.Compose.navigation
     implementation Libs.Coroutines.core
 
+    implementation Libs.Others.liveEvent
+
     testImplementation Libs.JUnit.junit
     testImplementation Libs.AndroidX.Test.Ext.junit
 }
