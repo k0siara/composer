@@ -2,6 +2,7 @@ package com.patrykkosieradzki.composerexample.ui.home
 
 import androidx.lifecycle.ViewModel
 import com.patrykkosieradzki.composer.core.*
+import com.patrykkosieradzki.composer.extensions.launchWithExceptionHandler
 import com.patrykkosieradzki.composerexample.model.Coin
 import com.patrykkosieradzki.composerexample.repositories.CoinRepository
 import com.patrykkosieradzki.composerexample.ui.home.HomeViewModel.HomeStateData
@@ -14,15 +15,15 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel(),
     UiStateManager<HomeStateData> by UiStateManagerImpl(UiState.Loading(HomeStateData())) {
 
-    init {
+    fun initialize() {
         loadCoins()
     }
 
     private fun loadCoins() {
-//        safeLaunch {
-//            val coins = coinRepository.getCoins()
-//            updateUiState { UiState.Success(HomeStateData(coins = coins)) }
-//        }
+        launchWithExceptionHandler {
+            val coins = coinRepository.getCoins()
+            updateUiStateToSuccess { it.copy(coins = coins) }
+        }
     }
 
     data class HomeStateData(

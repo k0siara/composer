@@ -9,6 +9,14 @@ interface UiStateManager<DATA : Any> {
     val initialState: UiState<DATA>
     val uiState: StateFlow<UiState<DATA>>
     val currentStateData: DATA
+
+    fun updateUiState(updateFunc: (UiState<DATA>) -> UiState<DATA>)
+    fun updateUiStateToLoading()
+    fun updateUiStateToRetrying()
+    fun updateUiStateToSwipeRefreshing()
+    fun updateUiStateToSuccess(updateFunc: (DATA) -> DATA)
+    fun updateUiStateToFailure(error: Throwable, updateFunc: ((DATA) -> DATA)? = null)
+    fun updateUiStateToSwipeRefreshFailure(error: Throwable, updateFunc: ((DATA) -> DATA)? = null)
 }
 
 class UiStateManagerImpl<DATA : Any>(
@@ -21,38 +29,38 @@ class UiStateManagerImpl<DATA : Any>(
     override val currentStateData
         get() = uiState.value.getData()
 
-    fun updateUiState(updateFunc: (UiState<DATA>) -> UiState<DATA>) {
+    override fun updateUiState(updateFunc: (UiState<DATA>) -> UiState<DATA>) {
         _uiState.update(updateFunc)
     }
 
-    fun updateUiStateToLoading() {
+    override fun updateUiStateToLoading() {
         updateUiState { UiState.Loading(uiState.value.getData()) }
     }
 
-    fun updateUiStateToRetrying() {
+    override fun updateUiStateToRetrying() {
         updateUiState { UiState.Loading(uiState.value.getData()) }
     }
 
-    fun updateUiStateToSwipeRefreshing() {
+    override fun updateUiStateToSwipeRefreshing() {
         updateUiState { UiState.Loading(uiState.value.getData()) }
     }
 
-    fun updateUiStateToSuccess(updateFunc: (DATA) -> DATA) {
+    override fun updateUiStateToSuccess(updateFunc: (DATA) -> DATA) {
         val newStateData = updateFunc.invoke(uiState.value.getData())
         updateUiState { UiState.Success(newStateData) }
     }
 
-    fun updateUiStateToFailure(
+    override fun updateUiStateToFailure(
         error: Throwable,
-        updateFunc: ((DATA) -> DATA)? = null
+        updateFunc: ((DATA) -> DATA)?
     ) {
         val newStateData = updateFunc?.invoke(uiState.value.getData()) ?: uiState.value.getData()
         updateUiState { UiState.Failure(newStateData, error) }
     }
 
-    fun updateUiStateToSwipeRefreshFailure(
+    override fun updateUiStateToSwipeRefreshFailure(
         error: Throwable,
-        updateFunc: ((DATA) -> DATA)? = null
+        updateFunc: ((DATA) -> DATA)?
     ) {
         val newStateData = updateFunc?.invoke(uiState.value.getData()) ?: uiState.value.getData()
         updateUiState { UiState.SwipeRefreshFailure(newStateData, error) }

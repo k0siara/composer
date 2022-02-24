@@ -1,7 +1,8 @@
 package com.patrykkosieradzki.composerexample
 
+import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
-import com.patrykkosieradzki.composer.toast.ComposerToastManager
+import com.patrykkosieradzki.composer.toast.ToastManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -9,5 +10,12 @@ import javax.inject.Inject
 class MainActivity : FragmentActivity() {
 
     @Inject
-    lateinit var toastManager: ComposerToastManager
+    lateinit var toastManager: ToastManager
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        toastManager.observeToastEffects(this)
+    }
 }

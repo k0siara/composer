@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-@InternalCoroutinesApi
 class FlowObserver<T>(
     lifecycleOwner: LifecycleOwner,
     private val flow: Flow<T>,
@@ -40,13 +39,11 @@ class FlowObserver<T>(
     }
 }
 
-@InternalCoroutinesApi
 inline fun <reified T> Flow<T>.observeOnLifecycle(
     lifecycleOwner: LifecycleOwner,
     noinline collector: suspend (T) -> Unit
 ) = FlowObserver(lifecycleOwner, this, collector)
 
-@InternalCoroutinesApi
 fun <T> Flow<T>.observeInLifecycle(
     lifecycleOwner: LifecycleOwner
 ) = FlowObserver(lifecycleOwner, this, {})

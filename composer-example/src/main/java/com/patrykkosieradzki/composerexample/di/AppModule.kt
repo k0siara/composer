@@ -1,6 +1,7 @@
 package com.patrykkosieradzki.composerexample.di
 
 import com.patrykkosieradzki.composer.toast.ComposerToastManager
+import com.patrykkosieradzki.composer.toast.ToastManager
 import com.patrykkosieradzki.composerexample.AppConfiguration
 import com.patrykkosieradzki.composerexample.ComposerAppConfiguration
 import com.patrykkosieradzki.composerexample.repositories.CoinApiRepository
@@ -75,7 +76,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideComposerToastManager(): ComposerToastManager {
+    fun provideComposerToastManager(): ToastManager {
         return ComposerToastManager()
     }
 }
