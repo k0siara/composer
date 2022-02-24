@@ -26,6 +26,10 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun onCoinClicked(coin: Coin) {
+
+    }
+
     data class HomeStateData(
         val coins: List<Coin> = emptyList()
     )
