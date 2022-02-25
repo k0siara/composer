@@ -1,6 +1,5 @@
 package com.patrykkosieradzki.composer.composables
 
-import android.annotation.SuppressLint
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
@@ -11,7 +10,6 @@ import com.patrykkosieradzki.composer.core.state.simple.SimpleUiState
 import com.patrykkosieradzki.composer.core.state.simple.SimpleUiStateManager
 import com.patrykkosieradzki.composer.utils.asLifecycleAwareState
 
-@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun SimpleUiStateView(
     simpleUiStateManager: SimpleUiStateManager,
@@ -23,10 +21,7 @@ fun SimpleUiStateView(
     renderOnSwipeRefreshFailure: @Composable ((error: Throwable) -> Unit)? = null,
     renderOnSuccess: @Composable (() -> Unit)? = null
 ) {
-    val state by simpleUiStateManager.uiState.asLifecycleAwareState(
-        lifecycleOwner = lifecycleOwner,
-        initialState = simpleUiStateManager.uiState.value
-    )
+    val state by simpleUiStateManager.uiState.asLifecycleAwareState()
 
     Crossfade(
         targetState = state,

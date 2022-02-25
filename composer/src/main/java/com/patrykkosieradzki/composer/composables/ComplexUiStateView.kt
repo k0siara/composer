@@ -1,29 +1,24 @@
 package com.patrykkosieradzki.composer.composables
 
-import android.annotation.SuppressLint
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.lifecycle.LifecycleOwner
 import com.patrykkosieradzki.composer.core.Composer.UiStateRenderConfig.Companion.defaultFailureComposable
 import com.patrykkosieradzki.composer.core.Composer.UiStateRenderConfig.Companion.defaultLoadingComposable
 import com.patrykkosieradzki.composer.core.Composer.UiStateRenderConfig.Companion.defaultRetryingComposable
 import com.patrykkosieradzki.composer.core.Composer.UiStateRenderConfig.Companion.defaultSuccessComposable
 import com.patrykkosieradzki.composer.core.Composer.UiStateRenderConfig.Companion.defaultSwipeRefreshFailureComposable
 import com.patrykkosieradzki.composer.core.Composer.UiStateRenderConfig.Companion.defaultSwipeRefreshingComposable
-import com.patrykkosieradzki.composer.core.state.complex.ComplexUiStateManager
 import com.patrykkosieradzki.composer.core.state.complex.ComplexUiState
+import com.patrykkosieradzki.composer.core.state.complex.ComplexUiStateManager
 import com.patrykkosieradzki.composer.core.state.complex.asFailure
 import com.patrykkosieradzki.composer.core.state.complex.asSwipeRefreshFailure
 import com.patrykkosieradzki.composer.utils.asLifecycleAwareState
 
-@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun <DATA : Any> ComplexUiStateView(
     complexUiStateManager: ComplexUiStateManager<DATA>,
-    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     renderOnLoading: @Composable ((DATA) -> Unit)? = null,
     renderOnRetrying: @Composable ((DATA) -> Unit)? = null,
     renderOnSwipeRefreshing: @Composable ((DATA) -> Unit)? = null,
@@ -31,10 +26,7 @@ fun <DATA : Any> ComplexUiStateView(
     renderOnSwipeRefreshFailure: @Composable ((DATA, error: Throwable) -> Unit)? = null,
     renderOnSuccess: @Composable ((data: DATA) -> Unit)? = null
 ) {
-    val state by complexUiStateManager.uiState.asLifecycleAwareState(
-        lifecycleOwner = lifecycleOwner,
-        initialState = complexUiStateManager.uiState.value
-    )
+    val state by complexUiStateManager.uiState.asLifecycleAwareState()
     val stateData = state.getData()
 
     Crossfade(
