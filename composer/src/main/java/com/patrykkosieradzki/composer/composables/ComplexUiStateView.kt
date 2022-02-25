@@ -1,5 +1,6 @@
 package com.patrykkosieradzki.composer.composables
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
@@ -18,6 +19,7 @@ import com.patrykkosieradzki.composer.core.state.complex.asFailure
 import com.patrykkosieradzki.composer.core.state.complex.asSwipeRefreshFailure
 import com.patrykkosieradzki.composer.utils.asLifecycleAwareState
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun <DATA : Any> ComplexUiStateView(
     complexUiStateManager: ComplexUiStateManager<DATA>,

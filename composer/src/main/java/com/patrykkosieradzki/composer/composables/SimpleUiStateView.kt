@@ -1,5 +1,6 @@
 package com.patrykkosieradzki.composer.composables
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
@@ -10,6 +11,7 @@ import com.patrykkosieradzki.composer.core.state.simple.SimpleUiState
 import com.patrykkosieradzki.composer.core.state.simple.SimpleUiStateManager
 import com.patrykkosieradzki.composer.utils.asLifecycleAwareState
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun SimpleUiStateView(
     simpleUiStateManager: SimpleUiStateManager,
