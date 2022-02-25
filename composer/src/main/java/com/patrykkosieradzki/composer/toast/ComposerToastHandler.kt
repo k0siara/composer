@@ -19,7 +19,9 @@ fun ComposerToastHandler(
     ComposerLifecycleAwareFlowCollector(
         flow = composerToastManager.toastFlow,
         lifecycleOwner = lifecycleOwner
-    ) {
-        Toast.makeText(context, it.text, it.duration).show()
+    ) { showToastEffect ->
+        showToastEffect?.let {
+            Toast.makeText(context, it.text, it.duration).show()
+        }
     }
 }

@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import com.patrykkosieradzki.composer.core.state.complex.ComplexUiStateManagerImpl
 import com.patrykkosieradzki.composer.core.state.complex.ComplexUiState
 import com.patrykkosieradzki.composer.core.state.complex.ComplexUiStateManager
+import com.patrykkosieradzki.composer.dialog.DialogManager
+import com.patrykkosieradzki.composer.dialog.DialogManagerImpl
 import com.patrykkosieradzki.composer.extensions.launchWithExceptionHandler
 import com.patrykkosieradzki.composer.navigation.NavigationManager
 import com.patrykkosieradzki.composer.navigation.NavigationManagerImpl
@@ -24,7 +26,8 @@ class HomeViewModel @Inject constructor(
         initialState = ComplexUiState.Loading(HomeStateData()),
         HomeStateData::class
     ),
-    NavigationManager by NavigationManagerImpl() {
+    NavigationManager by NavigationManagerImpl(),
+    DialogManager by DialogManagerImpl() {
 
     fun initialize() {
         if (currentState is ComplexUiState.Loading) {

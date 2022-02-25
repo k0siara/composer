@@ -4,8 +4,6 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.lifecycle.LifecycleOwner
 import com.patrykkosieradzki.composer.core.state.simple.SimpleUiState
 import com.patrykkosieradzki.composer.core.state.simple.SimpleUiStateManager
 import com.patrykkosieradzki.composer.utils.asLifecycleAwareState
@@ -13,7 +11,6 @@ import com.patrykkosieradzki.composer.utils.asLifecycleAwareState
 @Composable
 fun SimpleUiStateView(
     simpleUiStateManager: SimpleUiStateManager,
-    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     renderOnLoading: @Composable (() -> Unit)? = null,
     renderOnRetrying: @Composable (() -> Unit)? = null,
     renderOnSwipeRefreshing: @Composable (() -> Unit)? = null,
@@ -29,8 +26,11 @@ fun SimpleUiStateView(
     ) {
         when (it) {
             is SimpleUiState.Loading -> renderOnLoading?.invoke()
-            is SimpleUiState.Loaded -> renderOnSuccess?.invoke()
-            is SimpleUiState.Error -> renderOnFailure?.invoke(it.throwable)
+            is SimpleUiState.Retrying -> renderOnRetrying?.invoke()
+            is SimpleUiState.SwipeRefreshing -> renderOnSwipeRefreshing?.invoke()
+            is SimpleUiState.Success -> renderOnSuccess?.invoke()
+            is SimpleUiState.Failure -> renderOnFailure?.invoke(it.throwable)
+            is SimpleUiState.SwipeRefreshFailure -> renderOnSwipeRefreshFailure?.invoke(it.throwable)
         }
     }
 }

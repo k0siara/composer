@@ -12,5 +12,5 @@ import javax.inject.Inject
 class CoinDetailsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel(),
-    SimpleUiStateManager by SimpleUiStateManagerImpl(SimpleUiState.Loaded, savedStateHandle) {
+    SimpleUiStateManager by SimpleUiStateManagerImpl(SimpleUiState.Success, savedStateHandle) {
 }
