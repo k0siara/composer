@@ -17,6 +17,6 @@ class MainActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        observeToastEffects(toastManager)
+        observeToastEffects(toastManager)
     }
 }

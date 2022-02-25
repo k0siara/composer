@@ -8,11 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
-import com.hadilq.liveevent.LiveEvent
-import com.patrykkosieradzki.composer.extensions.fireEvent
+import com.patrykkosieradzki.composer.core.ComposerEffectHandler
+import com.patrykkosieradzki.composer.extensions.fireEffect
 
 interface NavigationManager {
-    val navigationEvent: LiveEvent<NavigationCommand>
+    val navigationEvent: ComposerEffectHandler<NavigationCommand>
 
     fun navigateTo(navDirections: NavDirections)
     fun navigateTo(@IdRes resId: Int)
@@ -22,26 +22,26 @@ interface NavigationManager {
 }
 
 class NavigationManagerImpl : NavigationManager {
-    override val navigationEvent: LiveEvent<NavigationCommand> = LiveEvent()
+    override val navigationEvent: ComposerEffectHandler<NavigationCommand> = ComposerEffectHandler()
 
     override fun navigateTo(navDirections: NavDirections) {
-        navigationEvent.fireEvent(NavigationCommand.To(navDirections))
+        navigationEvent.fireEffect(NavigationCommand.To(navDirections))
     }
 
     override fun navigateTo(@IdRes resId: Int) {
-        navigationEvent.fireEvent(NavigationCommand.ToId(resId))
+        navigationEvent.fireEffect(NavigationCommand.ToId(resId))
     }
 
     override fun navigateBack() {
-        navigationEvent.fireEvent(NavigationCommand.Back)
+        navigationEvent.fireEffect(NavigationCommand.Back)
     }
 
     override fun navigateBackTo(@IdRes destinationId: Int) {
-        navigationEvent.fireEvent(NavigationCommand.BackTo(destinationId))
+        navigationEvent.fireEffect(NavigationCommand.BackTo(destinationId))
     }
 
     override fun navigateBackWithResult(requestKey: String, bundle: Bundle) {
-        navigationEvent.fireEvent(NavigationCommand.BackWithResult(requestKey, bundle))
+        navigationEvent.fireEffect(NavigationCommand.BackWithResult(requestKey, bundle))
     }
 }
 
