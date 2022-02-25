@@ -54,8 +54,6 @@ dependencies {
     implementation Libs.AndroidX.Compose.material
     implementation Libs.Coroutines.core
 
-    api Libs.Others.liveEvent
-
     testImplementation Libs.JUnit.junit
     testImplementation Libs.AndroidX.Test.Ext.junit
 }

@@ -2,6 +2,8 @@ package com.patrykkosieradzki.composer.core
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.lifecycle.LifecycleOwner
 import com.patrykkosieradzki.composer.utils.observeInLifecycle
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -15,9 +17,11 @@ fun <T> ComposerLifecycleAwareFlowCollector(
     lifecycleOwner: LifecycleOwner,
     onEffectCallback: (T) -> Unit
 ) {
-    DisposableEffect(Unit) {
+    val currentOnEffectCallback by rememberUpdatedState(newValue = onEffectCallback)
+
+    DisposableEffect(lifecycleOwner, currentOnEffectCallback) {
         val observer = flow.onEach {
-            onEffectCallback(it)
+            currentOnEffectCallback.invoke(it)
         }.observeInLifecycle(lifecycleOwner).observer
 
         onDispose {

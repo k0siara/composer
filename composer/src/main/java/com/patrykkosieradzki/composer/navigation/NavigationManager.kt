@@ -8,11 +8,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
-import com.patrykkosieradzki.composer.core.ComposerEffectHandler
-import com.patrykkosieradzki.composer.extensions.fireEffect
+import com.patrykkosieradzki.composer.utils.observeInLifecycle
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 
 interface NavigationManager {
-    val navigationEvent: ComposerEffectHandler<NavigationCommand>
+    val navigationCommandFlow: Flow<NavigationCommand>
 
     fun navigateTo(navDirections: NavDirections)
     fun navigateTo(@IdRes resId: Int)
@@ -22,26 +26,27 @@ interface NavigationManager {
 }
 
 class NavigationManagerImpl : NavigationManager {
-    override val navigationEvent: ComposerEffectHandler<NavigationCommand> = ComposerEffectHandler()
+    private val navCommandsChannel: Channel<NavigationCommand> = Channel(UNLIMITED)
+    override val navigationCommandFlow: Flow<NavigationCommand> = navCommandsChannel.receiveAsFlow()
 
     override fun navigateTo(navDirections: NavDirections) {
-        navigationEvent.fireEffect(NavigationCommand.To(navDirections))
+        navCommandsChannel.trySend(NavigationCommand.To(navDirections))
     }
 
     override fun navigateTo(@IdRes resId: Int) {
-        navigationEvent.fireEffect(NavigationCommand.ToId(resId))
+        navCommandsChannel.trySend(NavigationCommand.ToId(resId))
     }
 
     override fun navigateBack() {
-        navigationEvent.fireEffect(NavigationCommand.Back)
+        navCommandsChannel.trySend(NavigationCommand.Back)
     }
 
     override fun navigateBackTo(@IdRes destinationId: Int) {
-        navigationEvent.fireEffect(NavigationCommand.BackTo(destinationId))
+        navCommandsChannel.trySend(NavigationCommand.BackTo(destinationId))
     }
 
     override fun navigateBackWithResult(requestKey: String, bundle: Bundle) {
-        navigationEvent.fireEffect(NavigationCommand.BackWithResult(requestKey, bundle))
+        navCommandsChannel.trySend(NavigationCommand.BackWithResult(requestKey, bundle))
     }
 }
 
@@ -51,7 +56,7 @@ fun NavigationManager.observeNavigation(
 ) {
     val navController = fragment.findNavController()
 
-    navigationEvent.observe(fragment.viewLifecycleOwner) {
+    navigationCommandFlow.onEach {
         when (it) {
             is NavigationCommand.To -> {
                 navController.navigate(it.directions)
@@ -83,7 +88,7 @@ fun NavigationManager.observeNavigation(
                     ?: throw IllegalStateException("Unknown navigation command")
             }
         }
-    }
+    }.observeInLifecycle(fragment.viewLifecycleOwner)
 }
 
 fun Fragment.registerBackNavigationHandler(

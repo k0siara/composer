@@ -2,8 +2,12 @@ package com.patrykkosieradzki.composer.toast
 
 import android.widget.Toast
 import androidx.activity.ComponentActivity
-import com.patrykkosieradzki.composer.core.ComposerEffectHandler
-import com.patrykkosieradzki.composer.extensions.fireEffect
+import com.patrykkosieradzki.composer.utils.observeInLifecycle
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 
 data class ShowToastEffect(
     val text: String,
@@ -11,15 +15,17 @@ data class ShowToastEffect(
 )
 
 interface ToastManager {
-    val toastEffect: ComposerEffectHandler<ShowToastEffect>
+    val toastFlow: Flow<ShowToastEffect>
     fun showToast(text: String, duration: Int = Toast.LENGTH_SHORT)
 }
 
 class ComposerToastManager : ToastManager {
-    override val toastEffect: ComposerEffectHandler<ShowToastEffect> = ComposerEffectHandler()
+    private val toastChannel: Channel<ShowToastEffect> = Channel(UNLIMITED)
+    override val toastFlow: Flow<ShowToastEffect>
+        get() = toastChannel.receiveAsFlow()
 
     override fun showToast(text: String, duration: Int) {
-        toastEffect.fireEffect(ShowToastEffect(text, duration))
+        toastChannel.trySend(ShowToastEffect(text, duration))
     }
 }
 
@@ -27,11 +33,11 @@ fun ToastManager.observeToastEffects(
     componentActivity: ComponentActivity,
     customOnToastEffect: ((ShowToastEffect) -> Unit)? = null
 ) {
-    toastEffect.observe(componentActivity) {
+    toastFlow.onEach {
         if (customOnToastEffect != null) {
             customOnToastEffect.invoke(it)
         } else {
             Toast.makeText(componentActivity, it.text, it.duration).show()
         }
-    }
+    }.observeInLifecycle(componentActivity)
 }
