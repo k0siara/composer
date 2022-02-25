@@ -23,15 +23,15 @@ class ComposerToastManager : ToastManager {
     }
 }
 
-fun ComponentActivity.observeToastEffects(
-    toastManager: ToastManager,
+fun ToastManager.observeToastEffects(
+    componentActivity: ComponentActivity,
     customOnToastEffect: ((ShowToastEffect) -> Unit)? = null
 ) {
-    toastManager.toastEffect.observe(this) {
+    toastEffect.observe(componentActivity) {
         if (customOnToastEffect != null) {
             customOnToastEffect.invoke(it)
         } else {
-            Toast.makeText(this, it.text, it.duration).show()
+            Toast.makeText(componentActivity, it.text, it.duration).show()
         }
     }
 }

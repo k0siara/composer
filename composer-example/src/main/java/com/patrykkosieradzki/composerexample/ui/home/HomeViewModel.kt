@@ -28,6 +28,7 @@ class HomeViewModel @Inject constructor(
 
     fun initialize() {
         if (currentState is ComplexUiState.Loading) {
+            toastManager.showToast("Hello!")
             loadCoins()
         }
     }
