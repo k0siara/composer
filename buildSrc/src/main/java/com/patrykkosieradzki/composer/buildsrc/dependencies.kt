@@ -1,9 +1,8 @@
 package com.patrykkosieradzki.composer.buildsrc
 
 object Versions {
-    const val kotlin = "1.5.10"
-    const val compose = "1.0.0"
-    const val composeNavigation = "2.4.0-alpha06"
+    const val kotlin = "1.6.10"
+    const val compose = "1.2.0-alpha04"
     const val androidGradlePlugin = "7.0.0"
     const val lifecycle = "2.4.0-alpha02"
 }
@@ -39,7 +38,6 @@ object Libs {
             const val runtime = "androidx.compose.runtime:runtime:${Versions.compose}"
             const val material = "androidx.compose.material:material:${Versions.compose}"
             const val animation = "androidx.compose.animation:animation:${Versions.compose}"
-            const val navigation = "androidx.navigation:navigation-compose:${Versions.composeNavigation}"
             const val tooling = "androidx.compose.ui:ui-tooling:${Versions.compose}"
             const val toolingPreview = "androidx.compose.ui:ui-tooling-preview:${Versions.compose}"
             const val iconsExtended = "androidx.compose.material:material-icons-extended:${Versions.compose}"

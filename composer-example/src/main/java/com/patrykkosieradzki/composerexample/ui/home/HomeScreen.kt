@@ -12,15 +12,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.patrykkosieradzki.composer.composables.UiStateView
-import com.patrykkosieradzki.composerexample.model.Coin
+import com.patrykkosieradzki.composer.composables.ComplexUiStateView
+import com.patrykkosieradzki.composerexample.model.CoinResponse
 import java.math.RoundingMode
 
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel
 ) {
-    UiStateView(homeViewModel) {
+    ComplexUiStateView(homeViewModel) {
         LazyColumn {
             items(it.coins) { coin ->
                 CoinListItem(
@@ -34,8 +34,8 @@ fun HomeScreen(
 
 @Composable
 fun CoinListItem(
-    coin: Coin,
-    onClick: (Coin) -> Unit
+    coin: CoinResponse,
+    onClick: (String?) -> Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -45,14 +45,14 @@ fun CoinListItem(
             .clickable(
                 interactionSource = interactionSource,
                 indication = rememberRipple(),
-                onClick = { onClick.invoke(coin) }
+                onClick = { onClick.invoke(coin.uuid) }
             )
             .padding(20.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Column {
-            Text(text = coin.name)
+            Text(text = coin.name ?: "-")
             Text(
                 text = coin.marketCap.toBigDecimal().setScale(2, RoundingMode.HALF_EVEN).toString()
             )

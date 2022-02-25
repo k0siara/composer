@@ -3,10 +3,16 @@ import com.patrykkosieradzki.composer.buildsrc.Libs
 
 plugins {
     id 'com.android.application'
+    id 'kotlin-parcelize'
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs.kotlin'
 }
+
+def securePropsFile = rootProject.file("secure.properties")
+def secureProps = new Properties()
+secureProps.load(new FileInputStream(securePropsFile))
 
 android {
     compileSdk 31
@@ -22,6 +28,8 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+
+        buildConfigField 'String', 'API_KEY', '"' + (secureProps.getProperty("api_key") ?: "") + '"'
     }
 
     buildTypes {

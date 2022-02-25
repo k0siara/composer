@@ -5,30 +5,33 @@ import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import com.patrykkosieradzki.composer.core.*
+import androidx.lifecycle.LifecycleOwner
 import com.patrykkosieradzki.composer.core.Composer.UiStateRenderConfig.Companion.defaultFailureComposable
 import com.patrykkosieradzki.composer.core.Composer.UiStateRenderConfig.Companion.defaultLoadingComposable
 import com.patrykkosieradzki.composer.core.Composer.UiStateRenderConfig.Companion.defaultRetryingComposable
 import com.patrykkosieradzki.composer.core.Composer.UiStateRenderConfig.Companion.defaultSuccessComposable
 import com.patrykkosieradzki.composer.core.Composer.UiStateRenderConfig.Companion.defaultSwipeRefreshFailureComposable
 import com.patrykkosieradzki.composer.core.Composer.UiStateRenderConfig.Companion.defaultSwipeRefreshingComposable
+import com.patrykkosieradzki.composer.core.state.complex.ComplexUiStateManager
+import com.patrykkosieradzki.composer.core.state.complex.ComplexUiState
+import com.patrykkosieradzki.composer.core.state.complex.asFailure
+import com.patrykkosieradzki.composer.core.state.complex.asSwipeRefreshFailure
 import com.patrykkosieradzki.composer.utils.asLifecycleAwareState
-import com.patrykkosieradzki.composer.utils.lifecycleAwareState
 
 @Composable
-fun <DATA : Any> UiStateView(
-    uiStateManager: UiStateManager<DATA>,
+fun <DATA : Any> ComplexUiStateView(
+    complexUiStateManager: ComplexUiStateManager<DATA>,
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     renderOnLoading: @Composable ((DATA) -> Unit)? = null,
     renderOnRetrying: @Composable ((DATA) -> Unit)? = null,
     renderOnSwipeRefreshing: @Composable ((DATA) -> Unit)? = null,
     renderOnFailure: @Composable ((DATA, error: Throwable) -> Unit)? = null,
     renderOnSwipeRefreshFailure: @Composable ((DATA, error: Throwable) -> Unit)? = null,
-    renderOnSuccess: @Composable ((data: DATA) -> Unit)? = null,
+    renderOnSuccess: @Composable ((data: DATA) -> Unit)? = null
 ) {
-    val lifecycleOwner = LocalLifecycleOwner.current
-    val state by uiStateManager.uiState.asLifecycleAwareState(
+    val state by complexUiStateManager.uiState.asLifecycleAwareState(
         lifecycleOwner = lifecycleOwner,
-        initialState = uiStateManager.uiState.value
+        initialState = complexUiStateManager.uiState.value
     )
     val stateData = state.getData()
 
@@ -37,12 +40,12 @@ fun <DATA : Any> UiStateView(
         animationSpec = tween(300)
     ) {
         when (it) {
-            is UiState.Loading -> Loading(renderOnLoading, stateData)
-            is UiState.Retrying -> Retrying(renderOnRetrying, stateData)
-            is UiState.SwipeRefreshing -> SwipeRefreshing(renderOnSwipeRefreshing, stateData)
-            is UiState.Success -> Success(renderOnSuccess, stateData)
-            is UiState.Failure -> Failure(renderOnFailure, stateData, state.asFailure.error)
-            is UiState.SwipeRefreshFailure -> SwipeRefreshFailure(
+            is ComplexUiState.Loading -> Loading(renderOnLoading, stateData)
+            is ComplexUiState.Retrying -> Retrying(renderOnRetrying, stateData)
+            is ComplexUiState.SwipeRefreshing -> SwipeRefreshing(renderOnSwipeRefreshing, stateData)
+            is ComplexUiState.Success -> Success(renderOnSuccess, stateData)
+            is ComplexUiState.Failure -> Failure(renderOnFailure, stateData, state.asFailure.error)
+            is ComplexUiState.SwipeRefreshFailure -> SwipeRefreshFailure(
                 renderOnSwipeRefreshFailure,
                 stateData,
                 state.asSwipeRefreshFailure.error

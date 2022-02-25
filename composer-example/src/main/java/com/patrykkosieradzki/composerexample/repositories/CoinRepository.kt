@@ -1,10 +1,10 @@
 package com.patrykkosieradzki.composerexample.repositories
 
-import com.patrykkosieradzki.composerexample.model.Coin
+import com.patrykkosieradzki.composerexample.model.CoinResponse
 import com.patrykkosieradzki.composerexample.services.CoinRankingService
 
 interface CoinRepository {
-    suspend fun getCoins(): List<Coin>
+    suspend fun getCoins(): List<CoinResponse>
 }
 
 class CoinApiRepository(
