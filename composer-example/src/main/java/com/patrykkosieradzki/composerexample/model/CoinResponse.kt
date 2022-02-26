@@ -20,7 +20,6 @@ data class CoinResponse (
     @Json(name = "the24HVolume") val the24HVolume: String?,
     @Json(name = "btcPrice") val btcPrice: String?,
     @Json(name = "description") val description: String?,
-    @Json(name = "iconURL") val iconURL: String?,
     @Json(name = "websiteURL") val websiteURL: String?,
     @Json(name = "links") val links: List<Link>?,
     @Json(name = "supply") val supply: Supply?,

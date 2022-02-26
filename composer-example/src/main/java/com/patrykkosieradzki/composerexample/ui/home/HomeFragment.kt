@@ -17,6 +17,7 @@ import com.patrykkosieradzki.composer.dialog.DialogManagerObserver
 import com.patrykkosieradzki.composer.navigation.observeNavigation
 import com.patrykkosieradzki.composer.utils.observeInLifecycle
 import com.patrykkosieradzki.composerexample.utils.composeView
+import com.patrykkosieradzki.composerexample.utils.getImageLoaderFromMainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.onEach
 
@@ -30,7 +31,9 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return composeView(requireContext()) {
+        return composeView(
+            imageLoader = getImageLoaderFromMainActivity()
+        ) {
             DialogManagerObserver(viewModel) {
 
             }

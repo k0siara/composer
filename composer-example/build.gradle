@@ -97,6 +97,9 @@ dependencies {
     implementation Libs.SquareUp.moshiAdapters
     implementation Libs.SquareUp.loggingInterceptor
 
+    implementation("io.coil-kt:coil-compose:1.4.0")
+    implementation("io.coil-kt:coil-svg:1.4.0")
+
     // Debug
     debugImplementation Libs.AndroidX.Compose.tooling
     debugImplementation Libs.SquareUp.leakCanary

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.patrykkosieradzki.composer.navigation.registerBackNavigationHandler
 import com.patrykkosieradzki.composerexample.utils.composeView
+import com.patrykkosieradzki.composerexample.utils.getImageLoaderFromMainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,7 +21,9 @@ class CoinDetailsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return composeView(requireContext()) {
+        return composeView(
+            imageLoader = getImageLoaderFromMainActivity()
+        ) {
             CoinDetailsScreen(viewModel)
         }
     }
