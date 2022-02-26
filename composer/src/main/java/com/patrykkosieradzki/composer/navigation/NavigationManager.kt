@@ -31,23 +31,23 @@ class NavigationManagerImpl : NavigationManager {
     override val navigationCommandFlow: Flow<NavigationCommand> = navCommandsChannel.receiveAsFlow()
 
     override fun navigateTo(navDirections: NavDirections) {
-        navigate(NavigationCommand.To(navDirections))
+        navigate(ComposerNavigationCommand.To(navDirections))
     }
 
     override fun navigateTo(@IdRes resId: Int) {
-        navigate(NavigationCommand.ToId(resId))
+        navigate(ComposerNavigationCommand.ToId(resId))
     }
 
     override fun navigateBack() {
-        navigate(NavigationCommand.Back)
+        navigate(ComposerNavigationCommand.Back)
     }
 
     override fun navigateBackTo(@IdRes destinationId: Int) {
-        navigate(NavigationCommand.BackTo(destinationId))
+        navigate(ComposerNavigationCommand.BackTo(destinationId))
     }
 
     override fun navigateBackWithResult(requestKey: String, bundle: Bundle) {
-        navigate(NavigationCommand.BackWithResult(requestKey, bundle))
+        navigate(ComposerNavigationCommand.BackWithResult(requestKey, bundle))
     }
 
     override fun navigate(navigationCommand: NavigationCommand) {
@@ -63,16 +63,16 @@ fun NavigationManager.observeNavigation(
 
     navigationCommandFlow.onEach {
         when (it) {
-            is NavigationCommand.To -> {
+            is ComposerNavigationCommand.To -> {
                 navController.navigate(it.directions)
             }
-            is NavigationCommand.ToId -> {
+            is ComposerNavigationCommand.ToId -> {
                 navController.navigate(it.resId)
             }
-            is NavigationCommand.Back -> {
+            is ComposerNavigationCommand.Back -> {
                 navController.navigateUp()
             }
-            is NavigationCommand.BackTo -> {
+            is ComposerNavigationCommand.BackTo -> {
                 if (navController.popBackStack(
                         destinationId = it.destinationId,
                         inclusive = it.inclusive
@@ -81,12 +81,15 @@ fun NavigationManager.observeNavigation(
                     navController.navigate(it.destinationId)
                 }
             }
-            is NavigationCommand.BackWithResult -> {
+            is ComposerNavigationCommand.BackWithResult -> {
                 fragment.setFragmentResult(
                     requestKey = it.requestKey,
                     result = it.bundle
                 )
                 navController.popBackStack()
+            }
+            is ComposerNavigationCommand.Custom -> {
+                it.navCall(navController)
             }
             else -> {
                 onOtherNavigationCommand?.invoke(it)

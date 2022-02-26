@@ -6,7 +6,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.patrykkosieradzki.composer.core.ComposerLifecycleAwareFlowCollector
 
 @Composable
-fun DialogManagerObserver(
+fun ComposerDialogComposable(
     dialogManager: DialogManager,
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     dialogContent: @Composable (ComposerDialog) -> Unit

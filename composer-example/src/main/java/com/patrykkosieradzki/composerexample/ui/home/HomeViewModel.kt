@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.patrykkosieradzki.composer.core.state.complex.ComplexUiStateManagerImpl
 import com.patrykkosieradzki.composer.core.state.complex.ComplexUiState
 import com.patrykkosieradzki.composer.core.state.complex.ComplexUiStateManager
+import com.patrykkosieradzki.composer.dialog.ComposerDialog
 import com.patrykkosieradzki.composer.dialog.DialogManager
 import com.patrykkosieradzki.composer.dialog.DialogManagerImpl
 import com.patrykkosieradzki.composer.extensions.launchWithExceptionHandler
@@ -52,9 +53,7 @@ class HomeViewModel @Inject constructor(
         if (coinId != null) {
             navigateTo(HomeFragmentDirections.toCoinDetailsFragment(coinId))
         } else {
-            launchWithExceptionHandler {
-                toastManager.showToast("Coin details unavailable")
-            }
+            toastManager.showToast("Coin details unavailable")
         }
     }
 
