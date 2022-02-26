@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 interface NavigationManager {
     val navigationCommandFlow: Flow<NavigationCommand>
 
+    fun navigate(navigationCommand: NavigationCommand)
     fun navigateTo(navDirections: NavDirections)
     fun navigateTo(@IdRes resId: Int)
     fun navigateBack()
@@ -30,23 +31,27 @@ class NavigationManagerImpl : NavigationManager {
     override val navigationCommandFlow: Flow<NavigationCommand> = navCommandsChannel.receiveAsFlow()
 
     override fun navigateTo(navDirections: NavDirections) {
-        navCommandsChannel.trySend(NavigationCommand.To(navDirections))
+        navigate(NavigationCommand.To(navDirections))
     }
 
     override fun navigateTo(@IdRes resId: Int) {
-        navCommandsChannel.trySend(NavigationCommand.ToId(resId))
+        navigate(NavigationCommand.ToId(resId))
     }
 
     override fun navigateBack() {
-        navCommandsChannel.trySend(NavigationCommand.Back)
+        navigate(NavigationCommand.Back)
     }
 
     override fun navigateBackTo(@IdRes destinationId: Int) {
-        navCommandsChannel.trySend(NavigationCommand.BackTo(destinationId))
+        navigate(NavigationCommand.BackTo(destinationId))
     }
 
     override fun navigateBackWithResult(requestKey: String, bundle: Bundle) {
-        navCommandsChannel.trySend(NavigationCommand.BackWithResult(requestKey, bundle))
+        navigate(NavigationCommand.BackWithResult(requestKey, bundle))
+    }
+
+    override fun navigate(navigationCommand: NavigationCommand) {
+        navCommandsChannel.trySend(navigationCommand)
     }
 }
 
