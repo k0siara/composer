@@ -20,11 +20,9 @@ sealed class HomeState {
 }
 ```
 
-Most of the screens you create will look like this. Initial, Loading, Success, Error like states. So is it worth writing it every time? 
+Most of the screens you create will look like this. Initial, Loading, Success, Error like states. So is it worth writing it every time? Nope.
 
-NO, JUST USE ComposerUiState and you're ready to go.
-
-Using ComposerUiState gives you access to these predefined states for every screen:
+Using composer's SimpleUiState and/or ComplexUiState gives you access to these predefined states for every screen:
 
 - Loading
 - Retrying
@@ -37,20 +35,27 @@ This should cover most of the cases for you. If not, you can create custom state
 
 ## Quickstart
 
-First, define a ComposerViewModel and ComposerUIStateData, that will hold your screen data, regardless of the UiState that is has right now:
+Imagine you want to create a new feature (let's say it's one screen for now).
 
 ```kotlin
-class HomeViewModel : ComposerViewModel<HomeStateData>(
-    initialState = ComposerUiState.Loading(HomeStateData())
-) {
+class HomeViewModel : ViewModel {
     // ViewModel logic
 }
+```
 
-data class HomeStateData(
-    val title: String = "",
-    val subtitle: String = "",
-    val additionalInfo: String = ""
-) : ComposerUIStateData
+### State handling
+
+You've created a new ViewModel and you want to hold the screen's state inside. With composer it is really easy.
+
+#### SimpleUiState
+
+```kotlin
+class HomeViewModel : ViewModel(),
+    SimpleUiStateManager by SimpleUiStateManagerImpl(
+        initialState = SimpleUiState.Loading
+    ) {
+    // ViewModel logic
+}
 ```
 
 Next, create a composable function that will present the state, based on the ComposerViewModel:
@@ -60,102 +65,19 @@ Next, create a composable function that will present the state, based on the Com
 fun HomeScreen(
     homeViewModel: HomeViewModel = viewModel() // use your DI to get the ViewModel
 ) {
-    ComposerUiStateView(viewModel = homeViewModel) { data ->
-        HomeScreenSuccessStateView(data)
-    }
-}
-
-@Composable
-private fun HomeScreenSuccessStateView(
-    data: HomeStateData
-) {
-    // Define your UI...
-}
-```
-
-## Updating state
-
-Now, let's say you want to change your state data and update it in your composable. How do we do that? It's easy:
-
-```kotlin
-class HomeViewModel : ComposerViewModel<HomeStateData>(
-    initialState = ComposerUiState.Loading(HomeStateData())
-) {
-    fun onButtonClicked() {
-        updateUiState { 
-            ComposerUiState.Success(
-                HomeStateData(
-                    title = "Hello, world!
-                )
-            ) 
-        }
-    }
-    
-    // or just...
-    
-    fun onSecondButtonClicked() {
-        updateUiStateToSuccess { 
-            it.copy(
-                title = "Hello, world!
-            )
-        }
-    }
-}
-```
-
-## Handling events
-
-If you're a MVI fan then you can easily handle events with composer. Just define events for your ViewModel and implement ComposerEventHandler:
-
-```kotlin
-class HomeViewModel : ComposerViewModel<HomeStateData>(
-    initialState = ComposerUiState.Loading(HomeStateData())
-), ComposerEventHandler<HomeEvent> {
-
-    override fun handleEvent(event: HomeEvent) {
-        when (event) {
-            is HomeEvent.ButtonClick -> onButtonClicked()
-        }
-    }
-
-    private fun onButtonClicked() {
-        updateUiStateToSuccess { 
-            it.copy(
-                title = "Hello, world!
-            )
-        }
-    }
-}
-
-sealed class HomeEvent : ComposerUiEvent {
-    object ButtonClick : HomeEvent()
-}
-```
-
-Then, simply use it in your composables:
-
-```kotlin
-@Composable
-private fun HomeScreenSuccessStateView(
-    data: HomeStateData,
-    eventHandler: ComposerEventHandler<HomeEvent>
-) {
-    Button(
-        onClick = { 
-            eventHandler.handleEvent(HomeEvent.ButtonClick) 
-        },
-        colors = ButtonDefaults.textButtonColors(
-            backgroundColor = Color.Red
-        )
-    ) {
-        Text("Button")
+    SimpleUiStateView(homeViewModel) {
+        HomeScreenSuccessStateView()
     }
 }
 ```
 
 Installation
 =======
-Coming soon to maven central
+Composer framework is still in progress, but you can still use it if you want. Just add this to your build.gradle dependencies section:
+
+```kotlin
+implementation 'com.github.k0siara:composer:0.0.1'
+```
 
 License
 =======
