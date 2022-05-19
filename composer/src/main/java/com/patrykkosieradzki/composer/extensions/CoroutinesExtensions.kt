@@ -1,16 +1,14 @@
 package com.patrykkosieradzki.composer.extensions
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-fun ViewModel.launchWithExceptionHandler(
+fun CoroutineScope.launchWithExceptionHandler(
     onFailure: ((Throwable) -> Unit)? = null,
     block: suspend CoroutineScope.() -> Unit
 ) {
-    viewModelScope.launch(
+    launch(
         context = CoroutineExceptionHandler { _, throwable -> onFailure?.invoke(throwable) },
         block = block
     )

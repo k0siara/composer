@@ -2,9 +2,11 @@ package com.patrykkosieradzki.composerexample.ui.details
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.patrykkosieradzki.composer.core.state.simple.SimpleUiState
-import com.patrykkosieradzki.composer.core.state.simple.SimpleUiStateManager
-import com.patrykkosieradzki.composer.core.state.simple.SimpleUiStateManagerImpl
+import androidx.lifecycle.viewModelScope
+import com.patrykkosieradzki.composer.core.event.ComposerFlowEvent
+import com.patrykkosieradzki.composer.core.state.UiState
+import com.patrykkosieradzki.composer.core.state.UiStateManager
+import com.patrykkosieradzki.composer.core.state.uiStateManagerDelegate
 import com.patrykkosieradzki.composer.extensions.launchWithExceptionHandler
 import com.patrykkosieradzki.composer.navigation.NavigationManager
 import com.patrykkosieradzki.composer.navigation.NavigationManagerImpl
@@ -19,22 +21,22 @@ import javax.inject.Inject
 class CoinDetailsViewModel @Inject constructor(
     private val coinRepository: CoinRepository
 ) : ViewModel(),
-    SimpleUiStateManager by SimpleUiStateManagerImpl(SimpleUiState.Loading),
+    UiStateManager by uiStateManagerDelegate(UiState.Loading),
     NavigationManager by NavigationManagerImpl() {
 
     val coin: MutableStateFlow<CoinResponse?> = MutableStateFlow(null)
+    val testEvent = ComposerFlowEvent<Int>()
 
     fun initialize(coinId: String) {
-        launchWithExceptionHandler(
+        viewModelScope.launchWithExceptionHandler(
             onFailure = {
                 Log.e("CoinDetailsViewModel", "Coin details fetch error", it)
                 updateUiStateToFailure(it)
             }
         ) {
             val coinDetails = coinRepository.getCoinDetails(coinId)
-            updateUiStateToSuccess {
-                coin.update { coinDetails }
-            }
+            coin.update { coinDetails }
+            updateUiStateToSuccess()
         }
     }
 

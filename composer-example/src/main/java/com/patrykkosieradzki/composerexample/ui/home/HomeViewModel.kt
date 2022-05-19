@@ -2,19 +2,16 @@ package com.patrykkosieradzki.composerexample.ui.home
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.patrykkosieradzki.composer.core.state.complex.ComplexUiStateManagerImpl
-import com.patrykkosieradzki.composer.core.state.complex.ComplexUiState
-import com.patrykkosieradzki.composer.core.state.complex.ComplexUiStateManager
-import com.patrykkosieradzki.composer.dialog.ComposerDialog
+import com.patrykkosieradzki.composer.core.state.UiState
+import com.patrykkosieradzki.composer.core.state.UiStateManager
+import com.patrykkosieradzki.composer.core.state.uiStateManagerDelegate
 import com.patrykkosieradzki.composer.dialog.DialogManager
 import com.patrykkosieradzki.composer.dialog.DialogManagerImpl
-import com.patrykkosieradzki.composer.extensions.launchWithExceptionHandler
 import com.patrykkosieradzki.composer.navigation.NavigationManager
 import com.patrykkosieradzki.composer.navigation.NavigationManagerImpl
 import com.patrykkosieradzki.composer.toast.ToastManager
 import com.patrykkosieradzki.composerexample.model.CoinResponse
 import com.patrykkosieradzki.composerexample.repositories.CoinRepository
-import com.patrykkosieradzki.composerexample.ui.home.HomeViewModel.HomeStateData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -23,30 +20,27 @@ class HomeViewModel @Inject constructor(
     private val coinRepository: CoinRepository,
     private val toastManager: ToastManager
 ) : ViewModel(),
-    ComplexUiStateManager<HomeStateData> by ComplexUiStateManagerImpl(
-        initialState = ComplexUiState.Loading(HomeStateData()),
-        HomeStateData::class
-    ),
+    UiStateManager by uiStateManagerDelegate(UiState.Loading),
     NavigationManager by NavigationManagerImpl(),
     DialogManager by DialogManagerImpl() {
 
     fun initialize() {
-        if (currentState is ComplexUiState.Loading) {
-            toastManager.showToast("Hello!")
-            loadCoins()
-        }
+//        if (currentState is ComplexUiState.Loading) {
+//            toastManager.showToast("Hello!")
+//            loadCoins()
+//        }
     }
 
     private fun loadCoins() {
-        launchWithExceptionHandler(
-            onFailure = { throwable ->
-                Log.e("HomeViewModel", "Coin fetch error", throwable)
-                updateUiStateToFailure(throwable)
-            }
-        ) {
-            val coins = coinRepository.getCoins()
-            updateComplexUiStateToSuccess { it.copy(coins = coins) }
-        }
+//        launchWithExceptionHandler(
+//            onFailure = { throwable ->
+//                Log.e("HomeViewModel", "Coin fetch error", throwable)
+//                updateUiStateToFailure(throwable)
+//            }
+//        ) {
+//            val coins = coinRepository.getCoins()
+//            updateComplexUiStateToSuccess { it.copy(coins = coins) }
+//        }
     }
 
     fun onCoinClicked(coinId: String?) {
@@ -56,8 +50,4 @@ class HomeViewModel @Inject constructor(
             toastManager.showToast("Coin details unavailable")
         }
     }
-
-    data class HomeStateData(
-        val coins: List<CoinResponse> = emptyList()
-    )
 }

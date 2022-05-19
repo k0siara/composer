@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -17,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import coil.compose.LocalImageLoader
 import coil.compose.rememberImagePainter
-import com.patrykkosieradzki.composer.composables.ComplexUiStateView
+import com.patrykkosieradzki.composer.composables.UiStateView
 import com.patrykkosieradzki.composerexample.model.CoinResponse
 import com.patrykkosieradzki.composerexample.utils.toNullableString
 import java.math.RoundingMode
@@ -33,14 +32,14 @@ fun HomeScreen(
             )
         }
     ) {
-        ComplexUiStateView(homeViewModel) {
+        UiStateView(homeViewModel) {
             LazyColumn {
-                items(it.coins) { coin ->
-                    CoinListItem(
-                        coin = coin,
-                        onClick = homeViewModel::onCoinClicked
-                    )
-                }
+//                items(it.coins) { coin ->
+//                    CoinListItem(
+//                        coin = coin,
+//                        onClick = homeViewModel::onCoinClicked
+//                    )
+//                }
             }
         }
     }

@@ -1,16 +1,45 @@
 package com.patrykkosieradzki.composer.core.state
 
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
-interface UiStateManager<STATE> {
-    val initialState: STATE
-    val uiState: StateFlow<STATE>
-    val currentState: STATE
+interface UiStateManager {
+    val initialState: UiState
+    val uiState: StateFlow<UiState>
+    val currentState: UiState
 
-    fun updateUiStateToLoading(doBefore: (() -> Unit)? = null)
-    fun updateUiStateToSuccess(doBefore: (() -> Unit)? = null)
-    fun updateUiStateToRetrying(doBefore: (() -> Unit)? = null)
-    fun updateUiStateToSwipeRefreshing(doBefore: (() -> Unit)? = null)
-    fun updateUiStateToFailure(error: Throwable, doBefore: (() -> Unit)? = null)
-    fun updateUiStateToSwipeRefreshFailure(error: Throwable, doBefore: (() -> Unit)? = null)
+    fun updateUiStateToLoading()
+    fun updateUiStateToSuccess()
+    fun updateUiStateToFailure(error: Throwable)
 }
+
+class UiStateManagerImpl(
+    override val initialState: UiState
+) : UiStateManager {
+    private val _uiState: MutableStateFlow<UiState> by lazy {
+        MutableStateFlow(initialState)
+    }
+    override val uiState = _uiState.asStateFlow()
+    override val currentState: UiState
+        get() = uiState.value
+
+    override fun updateUiStateToLoading() {
+        update(UiState.Loading)
+    }
+
+    override fun updateUiStateToSuccess() {
+        update(UiState.Success)
+    }
+
+    override fun updateUiStateToFailure(error: Throwable) {
+        update(UiState.Failure(error))
+    }
+
+    private fun update(state: UiState) {
+        _uiState.update { state }
+    }
+}
+
+fun uiStateManagerDelegate(initialState: UiState) = UiStateManagerImpl(initialState = initialState)

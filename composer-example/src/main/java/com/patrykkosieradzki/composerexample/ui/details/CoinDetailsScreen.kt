@@ -11,16 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.modifier.modifierLocalOf
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.text.HtmlCompat
 import coil.compose.LocalImageLoader
 import coil.compose.rememberImagePainter
-import com.patrykkosieradzki.composer.composables.CenteredColumn
-import com.patrykkosieradzki.composer.composables.SimpleUiStateView
+import com.patrykkosieradzki.composer.composables.UiStateView
 import com.patrykkosieradzki.composer.utils.asLifecycleAwareState
 import com.patrykkosieradzki.composerexample.R
 import com.patrykkosieradzki.composerexample.utils.toNullableString
@@ -46,7 +43,7 @@ fun CoinDetailsScreen(
             )
         }
     ) {
-        SimpleUiStateView(viewModel) {
+        UiStateView(viewModel) {
             coinDetails?.let {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),

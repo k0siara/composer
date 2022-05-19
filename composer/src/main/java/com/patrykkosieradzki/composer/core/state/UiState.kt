@@ -1,3 +1,7 @@
 package com.patrykkosieradzki.composer.core.state
 
-interface UiState
+sealed interface UiState {
+    object Loading : UiState
+    object Success : UiState
+    data class Failure(val throwable: Throwable) : UiState
+}
