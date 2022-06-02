@@ -1,73 +1,46 @@
 package com.patrykkosieradzki.composer.composables
 
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.patrykkosieradzki.composer.core.Async
-import com.patrykkosieradzki.composer.core.Composer
-import com.patrykkosieradzki.composer.core.Composer.AsyncRenderConfig.Companion.defaultFailComposable
-import com.patrykkosieradzki.composer.core.Composer.AsyncRenderConfig.Companion.defaultLoadingComposable
-import com.patrykkosieradzki.composer.core.Composer.AsyncRenderConfig.Companion.defaultSuccessComposable
-import com.patrykkosieradzki.composer.core.Composer.AsyncRenderConfig.Companion.defaultUninitializedComposable
-import com.patrykkosieradzki.composer.utils.orElse
 
 @Composable
 fun <T> ComposerAsyncView(
-    async: Async<T>,
-    hideOnFailure: Boolean = false,
-    renderOnUninitialized: @Composable (() -> Unit)? = null,
-    renderOnLoading: @Composable ((data: T?) -> Unit)? = null,
-    renderOnFail: @Composable ((data: T?, error: Throwable) -> Unit)? = null,
-    renderOnSuccess: @Composable ((data: T?) -> Unit)? = null,
+    modifier: Modifier = Modifier,
+    asyncProvider: () -> Async<T>,
+    renderOnUninitialized: (@Composable () -> Unit)? = null,
+    renderOnLoading: (@Composable (T?) -> Unit)? = null,
+    renderOnEmpty: (@Composable (T?) -> Unit)? = null,
+    renderOnFailure: (@Composable (Throwable, T?) -> Unit)? = null,
+    renderOnSuccess: (@Composable (T?) -> Unit)? = null
 ) {
-    when (async) {
-        is Async.Uninitialized -> Uninitialized(renderOnUninitialized)
-        is Async.Loading -> Loading(renderOnLoading, async)
-        is Async.Success -> Success(renderOnSuccess, async)
-        is Async.Fail -> Fail(renderOnFail, async, hideOnFailure)
-    }
-}
+    val async = asyncProvider()
 
-@Composable
-private fun Uninitialized(
-    renderOnUninitialized: @Composable (() -> Unit)?
-) {
-    (renderOnUninitialized.orElse(defaultUninitializedComposable))?.invoke()
-}
-
-@Composable
-private fun <T> Loading(
-    renderOnLoading: @Composable ((T?) -> Unit)?,
-    async: Async.Loading<T>
-) {
-    if (renderOnLoading != null) {
-        renderOnLoading.invoke(async())
-    } else {
-        defaultLoadingComposable.invoke()
-    }
-}
-
-@Composable
-private fun <T> Success(
-    renderOnSuccess: @Composable ((T?) -> Unit)?,
-    async: Async.Success<T>
-) {
-    if (renderOnSuccess != null) {
-        renderOnSuccess.invoke(async())
-    } else {
-        defaultSuccessComposable.invoke()
-    }
-}
-
-@Composable
-private fun <T> Fail(
-    renderOnFail: @Composable ((data: T?, error: Throwable) -> Unit)?,
-    async: Async.Fail<T>,
-    hideOnFailure: Boolean
-) {
-    if (!Composer.AsyncRenderConfig.hideEveryAsyncOnFailure && !hideOnFailure) {
-        if (renderOnFail != null) {
-            renderOnFail.invoke(async(), async.error)
-        } else {
-            defaultFailComposable.invoke(async.error)
+    Crossfade(
+        modifier = Modifier.then(modifier),
+        targetState = async.javaClass.kotlin,
+        animationSpec = tween(300)
+    ) { animatedAsync ->
+        when (animatedAsync) {
+            Async.Uninitialized::class -> {
+                renderOnUninitialized?.invoke()
+            }
+            Async.Loading::class -> {
+                renderOnLoading?.invoke(async.invoke())
+            }
+            Async.Success::class -> {
+                renderOnSuccess?.invoke(async.invoke())
+            }
+            Async.Empty::class -> {
+                renderOnEmpty?.invoke(async.invoke())
+            }
+            Async.Fail::class -> {
+                if (async is Async.Fail) {
+                    renderOnFailure?.invoke(async.error, async())
+                }
+            }
         }
     }
 }

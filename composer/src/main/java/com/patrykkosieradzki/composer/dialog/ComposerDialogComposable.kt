@@ -16,8 +16,7 @@ fun ComposerDialogComposable(
     ComposerLifecycleAwareFlowCollector(
         flow = dialogManager.dialogFlow,
         lifecycleOwner = lifecycleOwner,
-        save = true,
-        onEffectCallback = { dialog = it }
+        onEach = { dialog = it }
     )
 
     dialog?.let { dialogContent.invoke(it) }
