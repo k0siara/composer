@@ -1,11 +1,10 @@
 package com.patrykkosieradzki.composer.composables
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import com.patrykkosieradzki.composer.core.event.ComposerFlowEvent
 import com.patrykkosieradzki.composer.utils.asLifecycleAwareState
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.*
 
 @Composable
 fun <T> ComposerFlowEventHandler(
@@ -15,10 +14,17 @@ fun <T> ComposerFlowEventHandler(
     val eventFiredState by event.firedFlow().asLifecycleAwareState()
     val eventState by event.flow().asLifecycleAwareState()
 
-    if (eventFiredState && eventState != null) {
-        LaunchedEffect(Unit) {
-            event.onEventHandled()
-            eventState?.let { event -> handleEvent.invoke(event, this) }
-        }
+    val currentHandleEvent by rememberUpdatedState(newValue = handleEvent)
+
+    LaunchedEffect(Unit) {
+        combine(
+            snapshotFlow { eventFiredState },
+            snapshotFlow { eventState },
+            transform = { fired, state -> if (fired) state else null }
+        ).filterNotNull()
+            .onEach { state ->
+                currentHandleEvent.invoke(state, this@LaunchedEffect)
+                event.onEventHandled()
+            }.launchIn(scope = this@LaunchedEffect)
     }
 }
