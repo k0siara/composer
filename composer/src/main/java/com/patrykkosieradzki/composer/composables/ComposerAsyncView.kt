@@ -4,7 +4,7 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.patrykkosieradzki.composer.core.Async
+import com.patrykkosieradzki.composer.core.state.Async
 
 @Composable
 fun <T> ComposerAsyncView(

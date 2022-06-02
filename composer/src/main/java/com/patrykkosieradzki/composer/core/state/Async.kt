@@ -1,4 +1,4 @@
-package com.patrykkosieradzki.composer.core
+package com.patrykkosieradzki.composer.core.state
 
 sealed class Async<out T>(
     val complete: Boolean,
