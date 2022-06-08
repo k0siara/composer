@@ -79,7 +79,7 @@ Installation
 Composer framework is still in progress, but you can still use it if you want. Just add this to your build.gradle dependencies section:
 
 ```kotlin
-implementation 'com.github.k0siara:composer:0.0.1'
+implementation 'com.github.k0siara:composer:1.0.0'
 ```
 
 License
