@@ -1,9 +1,12 @@
-[![build](https://github.com/k0siara/composer/actions/workflows/android.yml/badge.svg?branch=master)](https://github.com/k0siara/composer/actions/workflows/android.yml)
+# Composer
 
-Composer
-========
+🎹 Jetpack Compose Framework for simple state and event management.
 
-Composer is a Jetpack Compose Framework for simple state and event management. 
+[![Android CI](https://github.com/k0siara/composer/actions/workflows/android.yml/badge.svg)](https://github.com/k0siara/composer/actions/workflows/android.yml)
+[![License](https://img.shields.io/github/license/k0siara/composer.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+<!-- [![Maven Central](https://img.shields.io/maven-central/v/com.patrykkosieradzki/composer.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.patrykkosieradzki%22%20AND%20a:%composer%22) -->
+
+![Jetpack Compose Framework for simple state and event management](/assets/composer_banner.png)
 
 Bored of writing boilerplate code in every new Android project to handle states, events, effects, etc?
 
