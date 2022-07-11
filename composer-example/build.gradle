@@ -1,5 +1,5 @@
 import com.patrykkosieradzki.composer.buildsrc.Versions
-import com.patrykkosieradzki.composer.buildsrc.Libs
+import com.patrykkosieradzki.composer.buildsrc.Dependencies
 
 plugins {
     id 'com.android.application'
@@ -53,8 +53,8 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion Versions.compose
-        kotlinCompilerVersion Versions.kotlin
+        kotlinCompilerExtensionVersion Versions.COMPOSE
+        kotlinCompilerVersion Versions.KOTLIN
     }
 
     packagingOptions {
@@ -67,19 +67,19 @@ android {
 dependencies {
     implementation project(":composer")
 
-    implementation Libs.AndroidX.coreKtx
-    implementation Libs.AndroidX.appCompat
-    implementation Libs.material
+    implementation Dependencies.AndroidX.coreKtx
+    implementation Dependencies.AndroidX.appCompat
+    implementation Dependencies.material
 
     // Compose
-    implementation Libs.AndroidX.Compose.ui
+    implementation Dependencies.AndroidX.Compose.ui
     implementation "androidx.compose.ui:ui-tooling:1.1.0"
     implementation "androidx.compose.foundation:foundation:1.1.0"
-    implementation Libs.AndroidX.Compose.compiler
-    implementation Libs.AndroidX.Compose.material
-    implementation Libs.AndroidX.Compose.toolingPreview
-    implementation Libs.AndroidX.Lifecycle.lifeCycleRuntimeKtx
-    implementation Libs.activityCompose
+    implementation Dependencies.AndroidX.Compose.compiler
+    implementation Dependencies.AndroidX.Compose.material
+    implementation Dependencies.AndroidX.Compose.toolingPreview
+    implementation Dependencies.AndroidX.Lifecycle.lifeCycleRuntimeKtx
+    implementation Dependencies.activityCompose
 
     implementation "androidx.fragment:fragment-ktx:1.4.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-alpha02"
@@ -92,23 +92,23 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.1'
 
     // Network
-    implementation Libs.SquareUp.retrofit
-    implementation Libs.SquareUp.moshiKotlin
-    implementation Libs.SquareUp.retrofitMoshiConverter
-    implementation Libs.SquareUp.moshiAdapters
-    implementation Libs.SquareUp.loggingInterceptor
+    implementation Dependencies.SquareUp.retrofit
+    implementation Dependencies.SquareUp.moshiKotlin
+    implementation Dependencies.SquareUp.retrofitMoshiConverter
+    implementation Dependencies.SquareUp.moshiAdapters
+    implementation Dependencies.SquareUp.loggingInterceptor
 
     implementation("io.coil-kt:coil-compose:1.4.0")
     implementation("io.coil-kt:coil-svg:1.4.0")
 
     // Debug
-    debugImplementation Libs.AndroidX.Compose.tooling
-    debugImplementation Libs.SquareUp.leakCanary
+    debugImplementation Dependencies.AndroidX.Compose.tooling
+    debugImplementation Dependencies.SquareUp.leakCanary
 
     // Testing
-    testImplementation Libs.JUnit.junit
-    testImplementation Libs.AndroidX.Test.Ext.junit
-    testImplementation Libs.AndroidX.Test.espressoCore
+    testImplementation Dependencies.JUnit.junit
+    testImplementation Dependencies.AndroidX.Test.Ext.junit
+    testImplementation Dependencies.AndroidX.Test.espressoCore
 
-    androidTestImplementation Libs.AndroidX.Compose.uiTest
+    androidTestImplementation Dependencies.AndroidX.Compose.uiTest
 }

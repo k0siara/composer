@@ -1,4 +1,5 @@
-import com.patrykkosieradzki.composer.buildsrc.Libs
+import com.patrykkosieradzki.composer.buildsrc.Configuration
+import com.patrykkosieradzki.composer.buildsrc.Dependencies
 import com.patrykkosieradzki.composer.buildsrc.Versions
 
 plugins {
@@ -9,6 +10,15 @@ plugins {
 kotlin {
     explicitApi()
 }
+
+version = Configuration.versionName
+
+ext {
+    PUBLISH_GROUP_ID = Configuration.artifactGroup
+    PUBLISH_ARTIFACT_ID = Configuration.artifactId
+    PUBLISH_VERSION = rootVersionName
+}
+
 
 android {
     compileSdk 32
@@ -34,8 +44,8 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion Versions.compose
-        kotlinCompilerVersion Versions.kotlin
+        kotlinCompilerExtensionVersion Versions.COMPOSE
+        kotlinCompilerVersion Versions.KOTLIN
     }
 
     packagingOptions {
@@ -45,15 +55,15 @@ android {
 }
 
 dependencies {
-    implementation Libs.AndroidX.Lifecycle.lifeCycleViewModelKtx
-    implementation Libs.AndroidX.Lifecycle.lifeCycleRuntimeKtx
-    implementation Libs.AndroidX.coreKtx
+    implementation Dependencies.AndroidX.Lifecycle.lifeCycleViewModelKtx
+    implementation Dependencies.AndroidX.Lifecycle.lifeCycleRuntimeKtx
+    implementation Dependencies.AndroidX.coreKtx
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.2'
 
-    implementation Libs.AndroidX.Compose.foundation
-    implementation Libs.AndroidX.Compose.material
-    implementation Libs.Coroutines.core
+    implementation Dependencies.AndroidX.Compose.foundation
+    implementation Dependencies.AndroidX.Compose.material
+    implementation Dependencies.Coroutines.core
 
-    testImplementation Libs.JUnit.junit
-    testImplementation Libs.AndroidX.Test.Ext.junit
+    testImplementation Dependencies.JUnit.junit
+    testImplementation Dependencies.AndroidX.Test.Ext.junit
 }

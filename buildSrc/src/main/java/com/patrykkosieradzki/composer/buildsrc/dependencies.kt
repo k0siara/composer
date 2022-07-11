@@ -1,24 +1,33 @@
 package com.patrykkosieradzki.composer.buildsrc
 
 object Versions {
-    const val kotlin = "1.6.10"
-    const val compose = "1.2.0-alpha04"
-    const val androidGradlePlugin = "7.0.0"
-    const val lifecycle = "2.4.0-alpha02"
+    internal const val ANDROID_GRADLE_PLUGIN = "7.2.0"
+    internal const val ANDROID_GRADLE_SPOTLESS = "6.3.0"
+    internal const val GRADLE_NEXUS_PUBLISH_PLUGIN = "1.1.0"
+
+    internal const val COMPOSE = "1.2.0-alpha04"
+    internal const val LIFECYCLE = "2.4.0-alpha02"
+
+    internal const val KOTLIN = "1.6.21"
+    internal const val COROUTINES_CORE = "1.6.2"
+
+    internal const val JUNIT = "4.13.2"
 }
 
-object Libs {
-    const val androidGradlePlugin = "com.android.tools.build:gradle:${Versions.androidGradlePlugin}"
+object Dependencies {
+    const val androidGradlePlugin =
+        "com.android.tools.build:gradle:${Versions.ANDROID_GRADLE_PLUGIN}"
+    const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.KOTLIN}"
+    const val spotlessGradlePlugin =
+        "com.diffplug.spotless:spotless-plugin-gradle:${Versions.ANDROID_GRADLE_SPOTLESS}"
+    const val gradleNexusPublishPlugin =
+        "io.github.gradle-nexus:publish-plugin:${Versions.GRADLE_NEXUS_PUBLISH_PLUGIN}"
+
     const val activityCompose = "androidx.activity:activity-compose:1.3.0"
     const val material = "com.google.android.material:material:1.4.0"
 
-    object Kotlin {
-        const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
-    }
-
     object Coroutines {
-        private const val version = "1.5.1"
-        const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
+        const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.COROUTINES_CORE}"
     }
 
     object AndroidX {
@@ -26,23 +35,26 @@ object Libs {
         const val coreKtx = "androidx.core:core-ktx:1.6.0"
 
         object Compose {
-            const val foundation = "androidx.compose.foundation:foundation:${Versions.compose}"
-            const val compiler = "androidx.compose.compiler:compiler:${Versions.compose}"
-            const val layout = "androidx.compose.foundation:foundation-layout:${Versions.compose}"
-            const val ui = "androidx.compose.ui:ui:${Versions.compose}"
-            const val uiUtil = "androidx.compose.ui:ui-util:${Versions.compose}"
-            const val runtime = "androidx.compose.runtime:runtime:${Versions.compose}"
-            const val material = "androidx.compose.material:material:${Versions.compose}"
-            const val animation = "androidx.compose.animation:animation:${Versions.compose}"
-            const val tooling = "androidx.compose.ui:ui-tooling:${Versions.compose}"
-            const val toolingPreview = "androidx.compose.ui:ui-tooling-preview:${Versions.compose}"
-            const val iconsExtended = "androidx.compose.material:material-icons-extended:${Versions.compose}"
-            const val uiTest = "androidx.compose.ui:ui-test-junit4:${Versions.compose}"
+            const val foundation = "androidx.compose.foundation:foundation:${Versions.COMPOSE}"
+            const val compiler = "androidx.compose.compiler:compiler:${Versions.COMPOSE}"
+            const val layout = "androidx.compose.foundation:foundation-layout:${Versions.COMPOSE}"
+            const val ui = "androidx.compose.ui:ui:${Versions.COMPOSE}"
+            const val uiUtil = "androidx.compose.ui:ui-util:${Versions.COMPOSE}"
+            const val runtime = "androidx.compose.runtime:runtime:${Versions.COMPOSE}"
+            const val material = "androidx.compose.material:material:${Versions.COMPOSE}"
+            const val animation = "androidx.compose.animation:animation:${Versions.COMPOSE}"
+            const val tooling = "androidx.compose.ui:ui-tooling:${Versions.COMPOSE}"
+            const val toolingPreview = "androidx.compose.ui:ui-tooling-preview:${Versions.COMPOSE}"
+            const val iconsExtended =
+                "androidx.compose.material:material-icons-extended:${Versions.COMPOSE}"
+            const val uiTest = "androidx.compose.ui:ui-test-junit4:${Versions.COMPOSE}"
         }
 
         object Lifecycle {
-            const val lifeCycleViewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
-            const val lifeCycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}"
+            const val lifeCycleViewModelKtx =
+                "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.LIFECYCLE}"
+            const val lifeCycleRuntimeKtx =
+                "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.LIFECYCLE}"
         }
 
         object Test {
