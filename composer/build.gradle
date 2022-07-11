@@ -67,3 +67,5 @@ dependencies {
     testImplementation Dependencies.JUnit.junit
     testImplementation Dependencies.AndroidX.Test.Ext.junit
 }
+
+apply from: "$rootDir/spotless/spotless.gradle"
