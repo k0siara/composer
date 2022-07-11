@@ -1,18 +1,26 @@
-import com.patrykkosieradzki.composer.buildsrc.Libs
+import com.patrykkosieradzki.composer.buildsrc.Dependencies
+
+apply plugin: 'io.github.gradle-nexus.publish-plugin'
 
 buildscript {
     repositories {
         google()
         mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath Libs.androidGradlePlugin
-        classpath Libs.Kotlin.gradlePlugin
-        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.38.1'
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.4.1"
+        classpath Dependencies.androidGradlePlugin
+        classpath Dependencies.kotlinGradlePlugin
+        classpath Dependencies.spotlessGradlePlugin
+        classpath Dependencies.gradleNexusPublishPlugin
+
+        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.41'
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.5.0"
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+apply from: "${rootDir}/scripts/publish-root.gradle"
