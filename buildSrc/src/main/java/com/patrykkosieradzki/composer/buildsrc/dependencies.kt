@@ -5,7 +5,7 @@ object Versions {
     internal const val ANDROID_GRADLE_SPOTLESS = "6.3.0"
     internal const val GRADLE_NEXUS_PUBLISH_PLUGIN = "1.1.0"
 
-    internal const val COMPOSE = "1.2.0-alpha04"
+    internal const val COMPOSE = "1.2.0-beta02"
     internal const val LIFECYCLE = "2.4.0-alpha02"
 
     internal const val KOTLIN = "1.6.21"
