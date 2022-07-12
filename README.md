@@ -74,13 +74,41 @@ fun HomeScreen(
 }
 ```
 
-Installation
-=======
-Composer framework is still in progress, but you can still use it if you want. Just add this to your build.gradle dependencies section:
+## How to include in your project
 
-```kotlin
-implementation 'com.github.k0siara:composer:1.0.0'
+[![Maven Central](https://img.shields.io/maven-central/v/com.patrykkosieradzki/composer.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.patrykkosieradzki%22%20AND%20a:%composer%22)
+
+``` groovy
+dependencies {
+    implementation "com.patrykkosieradzki:composer:1.0.0"
+}
+
 ```
+
+## SNAPSHOT
+[![Composer](https://img.shields.io/static/v1?label=snapshot&message=Composer&logo=apache%20maven&color=C71A36)](https://s01.oss.sonatype.org/content/repositories/snapshots/com/patrykkosieradzki/composer/) <br>
+
+<details>
+ <summary>See how to import the snapshot</summary>
+
+### Including the SNAPSHOT
+Snapshots of the current development version of Composer are available, which track [the latest versions](https://s01.oss.sonatype.org/content/repositories/snapshots/com/patrykkosieradzki/composer/).
+
+To import snapshot versions on your project, add the code snippet below on your gradle file.
+```Gradle
+repositories {
+   maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
+}
+```
+
+Next, add the below dependency to your **module**'s `build.gradle` file.
+```gradle
+dependencies {
+    implementation "com.patrykkosieradzki:composer:1.0.0-SNAPSHOT"
+}
+```
+
+</details>
 
 License
 =======
