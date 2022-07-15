@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import com.patrykkosieradzki.composer.core.state.UiState
 import com.patrykkosieradzki.composer.core.state.UiStateManager
 import com.patrykkosieradzki.composer.dialog.DialogManager
-import com.patrykkosieradzki.composer.dialog.DialogManagerImpl
 import com.patrykkosieradzki.composer.navigation.NavigationManager
 import com.patrykkosieradzki.composer.toast.ToastManager
 import com.patrykkosieradzki.composerexample.repositories.CoinRepository
@@ -18,7 +17,7 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel(),
     UiStateManager by UiStateManager.delegate(initialState = UiState.Loading),
     NavigationManager by NavigationManager.delegate(),
-    DialogManager by DialogManagerImpl() {
+    DialogManager by DialogManager.delegate() {
 
     fun initialize() {
 //        if (currentState is ComplexUiState.Loading) {
