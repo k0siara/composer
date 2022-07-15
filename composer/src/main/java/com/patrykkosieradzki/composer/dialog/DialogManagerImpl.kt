@@ -13,13 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.patrykkosieradzki.composer.core.state
+package com.patrykkosieradzki.composer.dialog
 
-sealed interface UiState {
-    object Loading : UiState
-    object Retrying : UiState
-    object SwipeRefreshing : UiState
-    object Success : UiState
-    data class Failure(val throwable: Throwable) : UiState
-    data class SwipeRefreshFailure(val throwable: Throwable) : UiState
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.receiveAsFlow
+
+internal class DialogManagerImpl : DialogManager {
+    private val channel: Channel<ComposerDialog?> = Channel(Channel.UNLIMITED)
+    override val dialogFlow: Flow<ComposerDialog?>
+        get() = channel.receiveAsFlow()
+
+    override fun showDialog(composerDialog: ComposerDialog) {
+        channel.trySend(composerDialog)
+    }
+
+    override fun closeDialog() {
+        channel.trySend(null)
+    }
 }

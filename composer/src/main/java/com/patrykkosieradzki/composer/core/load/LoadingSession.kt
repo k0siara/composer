@@ -30,12 +30,19 @@ class LoadingSession {
         loadingTime: LoadingTime
     ) {
         val loadingTimeLeft =
-            loadingTime.timeInMs.toLong() - (System.currentTimeMillis() - startTime.value)
+            loadingTime.timeInMs - (System.currentTimeMillis() - startTime.value)
         if (loadingTimeLeft > 0) delay(loadingTimeLeft)
     }
 
-    sealed class LoadingTime(val timeInMs: Int) {
-        object Short : LoadingTime(300)
-        object Long : LoadingTime(1000)
+    sealed interface LoadingTime {
+        val timeInMs: Long
+
+        object DefaultLoadTime : LoadingTime {
+            override val timeInMs: Long = 1000L
+        }
+
+        object DefaultLoadFailTime : LoadingTime {
+            override val timeInMs: Long = 500L
+        }
     }
 }

@@ -24,11 +24,8 @@ import androidx.fragment.app.setFragmentResult
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.patrykkosieradzki.composer.utils.observeInLifecycle
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.receiveAsFlow
 
 interface NavigationManager {
     val navigationCommandFlow: Flow<NavigationCommand>
@@ -39,34 +36,9 @@ interface NavigationManager {
     fun navigateBack()
     fun navigateBackTo(@IdRes destinationId: Int)
     fun navigateBackWithResult(requestKey: String, bundle: Bundle)
-}
 
-class NavigationManagerImpl : NavigationManager {
-    private val navCommandsChannel: Channel<NavigationCommand> = Channel(UNLIMITED)
-    override val navigationCommandFlow: Flow<NavigationCommand> = navCommandsChannel.receiveAsFlow()
-
-    override fun navigateTo(navDirections: NavDirections) {
-        navigate(ComposerNavigationCommand.To(navDirections))
-    }
-
-    override fun navigateTo(@IdRes resId: Int) {
-        navigate(ComposerNavigationCommand.ToId(resId))
-    }
-
-    override fun navigateBack() {
-        navigate(ComposerNavigationCommand.Back)
-    }
-
-    override fun navigateBackTo(@IdRes destinationId: Int) {
-        navigate(ComposerNavigationCommand.BackTo(destinationId))
-    }
-
-    override fun navigateBackWithResult(requestKey: String, bundle: Bundle) {
-        navigate(ComposerNavigationCommand.BackWithResult(requestKey, bundle))
-    }
-
-    override fun navigate(navigationCommand: NavigationCommand) {
-        navCommandsChannel.trySend(navigationCommand)
+    companion object {
+        fun delegate(): NavigationManager = NavigationManagerImpl()
     }
 }
 

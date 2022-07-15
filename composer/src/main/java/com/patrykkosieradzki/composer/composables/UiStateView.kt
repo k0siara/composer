@@ -19,7 +19,6 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import com.patrykkosieradzki.composer.core.Composer
 import com.patrykkosieradzki.composer.core.state.UiState
 import com.patrykkosieradzki.composer.core.state.UiStateManager
 import com.patrykkosieradzki.composer.utils.asLifecycleAwareState
@@ -28,7 +27,10 @@ import com.patrykkosieradzki.composer.utils.asLifecycleAwareState
 fun UiStateView(
     uiStateManager: UiStateManager,
     renderOnLoading: @Composable (() -> Unit)? = null,
+    renderOnRetrying: @Composable (() -> Unit)? = null,
+    renderOnSwipeRefreshing: @Composable (() -> Unit)? = null,
     renderOnFailure: @Composable ((error: Throwable) -> Unit)? = null,
+    renderOnSwipeRefreshFailure: @Composable ((error: Throwable) -> Unit)? = null,
     renderOnSuccess: @Composable (() -> Unit)? = null
 ) {
     val state by uiStateManager.uiState.asLifecycleAwareState()
@@ -36,45 +38,14 @@ fun UiStateView(
     Crossfade(
         targetState = state,
         animationSpec = tween(300)
-    ) {
-        when (it) {
-            is UiState.Loading -> Loading(renderOnLoading)
-            is UiState.Success -> Success(renderOnSuccess)
-            is UiState.Failure -> Failure(renderOnFailure, it.throwable)
+    ) { uiState ->
+        when (uiState) {
+            is UiState.Loading -> renderOnLoading?.invoke()
+            is UiState.Retrying -> renderOnRetrying?.invoke()
+            is UiState.SwipeRefreshing -> renderOnSwipeRefreshing?.invoke()
+            is UiState.Success -> renderOnSuccess?.invoke()
+            is UiState.Failure -> renderOnFailure?.invoke(uiState.throwable)
+            is UiState.SwipeRefreshFailure -> renderOnSwipeRefreshFailure?.invoke(uiState.throwable)
         }
-    }
-}
-
-@Composable
-private fun Loading(
-    renderOnLoading: @Composable (() -> Unit)? = null
-) {
-    if (renderOnLoading != null) {
-        renderOnLoading.invoke()
-    } else {
-        Composer.UiStateRenderConfig.defaultLoadingComposable.invoke()
-    }
-}
-
-@Composable
-private fun Success(
-    renderOnSuccess: @Composable (() -> Unit)? = null
-) {
-    if (renderOnSuccess != null) {
-        renderOnSuccess.invoke()
-    } else {
-        Composer.UiStateRenderConfig.defaultSuccessComposable.invoke()
-    }
-}
-
-@Composable
-private fun Failure(
-    renderOnFailure: @Composable ((error: Throwable) -> Unit)? = null,
-    error: Throwable
-) {
-    if (renderOnFailure != null) {
-        renderOnFailure.invoke(error)
-    } else {
-        Composer.UiStateRenderConfig.defaultFailureComposable.invoke(error)
     }
 }

@@ -1,16 +1,11 @@
 package com.patrykkosieradzki.composerexample.ui.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.patrykkosieradzki.composer.core.state.UiState
 import com.patrykkosieradzki.composer.core.state.UiStateManager
-import com.patrykkosieradzki.composer.core.state.uiStateManagerDelegate
 import com.patrykkosieradzki.composer.dialog.DialogManager
-import com.patrykkosieradzki.composer.dialog.DialogManagerImpl
 import com.patrykkosieradzki.composer.navigation.NavigationManager
-import com.patrykkosieradzki.composer.navigation.NavigationManagerImpl
 import com.patrykkosieradzki.composer.toast.ToastManager
-import com.patrykkosieradzki.composerexample.model.CoinResponse
 import com.patrykkosieradzki.composerexample.repositories.CoinRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -20,9 +15,9 @@ class HomeViewModel @Inject constructor(
     private val coinRepository: CoinRepository,
     private val toastManager: ToastManager
 ) : ViewModel(),
-    UiStateManager by uiStateManagerDelegate(UiState.Loading),
-    NavigationManager by NavigationManagerImpl(),
-    DialogManager by DialogManagerImpl() {
+    UiStateManager by UiStateManager.delegate(initialState = UiState.Loading),
+    NavigationManager by NavigationManager.delegate(),
+    DialogManager by DialogManager.delegate() {
 
     fun initialize() {
 //        if (currentState is ComplexUiState.Loading) {

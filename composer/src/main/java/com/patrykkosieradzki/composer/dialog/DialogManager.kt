@@ -15,10 +15,7 @@
  */
 package com.patrykkosieradzki.composer.dialog
 
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.receiveAsFlow
 
 interface ComposerDialog
 
@@ -27,18 +24,8 @@ interface DialogManager {
 
     fun showDialog(composerDialog: ComposerDialog)
     fun closeDialog()
-}
 
-class DialogManagerImpl : DialogManager {
-    private val channel: Channel<ComposerDialog?> = Channel(UNLIMITED)
-    override val dialogFlow: Flow<ComposerDialog?>
-        get() = channel.receiveAsFlow()
-
-    override fun showDialog(composerDialog: ComposerDialog) {
-        channel.trySend(composerDialog)
-    }
-
-    override fun closeDialog() {
-        channel.trySend(null)
+    companion object {
+        fun delegate(): DialogManager = DialogManagerImpl()
     }
 }

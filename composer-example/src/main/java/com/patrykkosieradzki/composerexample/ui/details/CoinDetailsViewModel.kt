@@ -3,13 +3,11 @@ package com.patrykkosieradzki.composerexample.ui.details
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.patrykkosieradzki.composer.core.event.ComposerFlowEvent
+import com.patrykkosieradzki.composer.core.event.StateFlowEvent
 import com.patrykkosieradzki.composer.core.state.UiState
 import com.patrykkosieradzki.composer.core.state.UiStateManager
-import com.patrykkosieradzki.composer.core.state.uiStateManagerDelegate
 import com.patrykkosieradzki.composer.extensions.launchWithExceptionHandler
 import com.patrykkosieradzki.composer.navigation.NavigationManager
-import com.patrykkosieradzki.composer.navigation.NavigationManagerImpl
 import com.patrykkosieradzki.composerexample.model.CoinResponse
 import com.patrykkosieradzki.composerexample.repositories.CoinRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,11 +19,11 @@ import javax.inject.Inject
 class CoinDetailsViewModel @Inject constructor(
     private val coinRepository: CoinRepository
 ) : ViewModel(),
-    UiStateManager by uiStateManagerDelegate(UiState.Loading),
-    NavigationManager by NavigationManagerImpl() {
+    UiStateManager by UiStateManager.delegate(initialState = UiState.Loading),
+    NavigationManager by NavigationManager.delegate() {
 
     val coin: MutableStateFlow<CoinResponse?> = MutableStateFlow(null)
-    val testEvent = ComposerFlowEvent<Int>()
+    val testEvent = StateFlowEvent<Int>()
 
     fun initialize(coinId: String) {
         viewModelScope.launchWithExceptionHandler(

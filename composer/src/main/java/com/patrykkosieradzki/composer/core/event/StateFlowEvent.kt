@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class ComposerFlowEvent<T> {
+class StateFlowEvent<T> {
     private val _eventState by lazy { MutableStateFlow<T?>(null) }
     private val _firedState by lazy { MutableStateFlow(false) }
 
