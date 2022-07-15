@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.patrykkosieradzki.composer.core.event.ComposerFlowEvent
 import com.patrykkosieradzki.composer.core.state.UiState
 import com.patrykkosieradzki.composer.core.state.UiStateManager
-import com.patrykkosieradzki.composer.core.state.uiStateManagerDelegate
 import com.patrykkosieradzki.composer.extensions.launchWithExceptionHandler
 import com.patrykkosieradzki.composer.navigation.NavigationManager
 import com.patrykkosieradzki.composer.navigation.NavigationManagerImpl
@@ -21,7 +20,7 @@ import javax.inject.Inject
 class CoinDetailsViewModel @Inject constructor(
     private val coinRepository: CoinRepository
 ) : ViewModel(),
-    UiStateManager by uiStateManagerDelegate(UiState.Loading),
+    UiStateManager by UiStateManager.delegate(initialState = UiState.Loading),
     NavigationManager by NavigationManagerImpl() {
 
     val coin: MutableStateFlow<CoinResponse?> = MutableStateFlow(null)
