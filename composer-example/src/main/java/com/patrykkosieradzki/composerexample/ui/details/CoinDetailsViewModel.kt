@@ -8,7 +8,6 @@ import com.patrykkosieradzki.composer.core.state.UiState
 import com.patrykkosieradzki.composer.core.state.UiStateManager
 import com.patrykkosieradzki.composer.extensions.launchWithExceptionHandler
 import com.patrykkosieradzki.composer.navigation.NavigationManager
-import com.patrykkosieradzki.composer.navigation.NavigationManagerImpl
 import com.patrykkosieradzki.composerexample.model.CoinResponse
 import com.patrykkosieradzki.composerexample.repositories.CoinRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +20,7 @@ class CoinDetailsViewModel @Inject constructor(
     private val coinRepository: CoinRepository
 ) : ViewModel(),
     UiStateManager by UiStateManager.delegate(initialState = UiState.Loading),
-    NavigationManager by NavigationManagerImpl() {
+    NavigationManager by NavigationManager.delegate() {
 
     val coin: MutableStateFlow<CoinResponse?> = MutableStateFlow(null)
     val testEvent = ComposerFlowEvent<Int>()

@@ -6,7 +6,6 @@ import com.patrykkosieradzki.composer.core.state.UiStateManager
 import com.patrykkosieradzki.composer.dialog.DialogManager
 import com.patrykkosieradzki.composer.dialog.DialogManagerImpl
 import com.patrykkosieradzki.composer.navigation.NavigationManager
-import com.patrykkosieradzki.composer.navigation.NavigationManagerImpl
 import com.patrykkosieradzki.composer.toast.ToastManager
 import com.patrykkosieradzki.composerexample.repositories.CoinRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +17,7 @@ class HomeViewModel @Inject constructor(
     private val toastManager: ToastManager
 ) : ViewModel(),
     UiStateManager by UiStateManager.delegate(initialState = UiState.Loading),
-    NavigationManager by NavigationManagerImpl(),
+    NavigationManager by NavigationManager.delegate(),
     DialogManager by DialogManagerImpl() {
 
     fun initialize() {
