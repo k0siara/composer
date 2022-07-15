@@ -15,8 +15,10 @@
  */
 package com.patrykkosieradzki.composer.toast
 
+import android.content.Context
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.lifecycle.LifecycleOwner
 import com.patrykkosieradzki.composer.utils.observeInLifecycle
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
@@ -45,14 +47,24 @@ class ComposerToastManager : ToastManager {
 }
 
 fun ToastManager.observeToastEffects(
-    componentActivity: ComponentActivity,
+    activity: ComponentActivity,
+    customOnToastEffect: ((ShowToastEffect) -> Unit)? = null
+) = observeToastEffects(
+    context = activity,
+    lifecycleOwner = activity,
+    customOnToastEffect = customOnToastEffect
+)
+
+fun ToastManager.observeToastEffects(
+    context: Context,
+    lifecycleOwner: LifecycleOwner,
     customOnToastEffect: ((ShowToastEffect) -> Unit)? = null
 ) {
     toastFlow.onEach {
         if (customOnToastEffect != null) {
             customOnToastEffect.invoke(it)
         } else {
-            Toast.makeText(componentActivity, it.text, it.duration).show()
+            Toast.makeText(context, it.text, it.duration).show()
         }
-    }.observeInLifecycle(componentActivity)
+    }.observeInLifecycle(lifecycleOwner)
 }

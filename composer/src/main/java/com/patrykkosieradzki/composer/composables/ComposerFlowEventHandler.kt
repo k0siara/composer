@@ -20,7 +20,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.snapshotFlow
-import com.patrykkosieradzki.composer.core.event.ComposerFlowEvent
+import com.patrykkosieradzki.composer.core.event.StateFlowEvent
 import com.patrykkosieradzki.composer.utils.asLifecycleAwareState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.combine
@@ -30,7 +30,7 @@ import kotlinx.coroutines.flow.onEach
 
 @Composable
 fun <T> ComposerFlowEventHandler(
-    event: ComposerFlowEvent<T>,
+    event: StateFlowEvent<T>,
     handleEvent: (T, CoroutineScope) -> Unit
 ) {
     val eventFiredState by event.firedFlow().asLifecycleAwareState()
