@@ -26,11 +26,11 @@ import kotlinx.coroutines.InternalCoroutinesApi
 
 @InternalCoroutinesApi
 @Composable
-fun ComposerToastManagerWidget(
+fun ToastManagerHandler(
     toastManager: ToastManager,
     context: Context = LocalContext.current,
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
-    onToastEffect: (ShowToastEffect) -> Unit = { showToastEffect ->
+    onToastEffect: (ToastManager.ShowToastEffect) -> Unit = { showToastEffect ->
         val text = showToastEffect.textModel.resolveText(context.resources)
         Toast.makeText(
             context,

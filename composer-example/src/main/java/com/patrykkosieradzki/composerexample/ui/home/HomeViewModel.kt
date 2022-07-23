@@ -5,7 +5,6 @@ import com.patrykkosieradzki.composer.core.state.UiState
 import com.patrykkosieradzki.composer.core.state.UiStateManager
 import com.patrykkosieradzki.composer.dialog.DialogManager
 import com.patrykkosieradzki.composer.navigation.NavigationManager
-import com.patrykkosieradzki.composer.toast.ShowToastEffect
 import com.patrykkosieradzki.composer.toast.ToastManager
 import com.patrykkosieradzki.composer.utils.TextModel
 import com.patrykkosieradzki.composerexample.repositories.CoinRepository
@@ -45,8 +44,10 @@ class HomeViewModel @Inject constructor(
             navigateTo(HomeFragmentDirections.toCoinDetailsFragment(coinId))
         } else {
             toastManager.showToast(
-                textModel = TextModel("Coin details unavailable"),
-                duration = ShowToastEffect.Duration.Long
+                ToastManager.ShowToastEffect(
+                    textModel = TextModel("Coin details unavailable"),
+                    duration = ToastManager.ShowToastEffect.Duration.Long
+                )
             )
         }
     }

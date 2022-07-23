@@ -15,18 +15,17 @@
  */
 package com.patrykkosieradzki.composer.toast
 
-import com.patrykkosieradzki.composer.utils.TextModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 
-class ComposerToastManager : ToastManager {
-    private val toastChannel: Channel<ShowToastEffect> = Channel(UNLIMITED)
-    override val toastFlow: Flow<ShowToastEffect>
+internal class ToastManagerImpl : ToastManager {
+    private val toastChannel: Channel<ToastManager.ShowToastEffect> = Channel(UNLIMITED)
+    override val toastFlow: Flow<ToastManager.ShowToastEffect>
         get() = toastChannel.receiveAsFlow()
 
-    override fun showToast(textModel: TextModel, duration: ShowToastEffect.Duration) {
-        toastChannel.trySend(ShowToastEffect(textModel, duration))
+    override fun showToast(showToastEffect: ToastManager.ShowToastEffect) {
+        toastChannel.trySend(showToastEffect)
     }
 }
