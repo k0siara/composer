@@ -19,7 +19,7 @@ import android.content.Context
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.LifecycleOwner
-import com.patrykkosieradzki.composer.utils.observeInLifecycle
+import com.patrykkosieradzki.composer.utils.launchInLifecycle
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
 import kotlinx.coroutines.flow.Flow
@@ -66,5 +66,5 @@ fun ToastManager.observeToastEffects(
         } else {
             Toast.makeText(context, it.text, it.duration).show()
         }
-    }.observeInLifecycle(lifecycleOwner)
+    }.launchInLifecycle(lifecycleOwner)
 }
