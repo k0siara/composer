@@ -24,19 +24,17 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class FlowObserver<T>(
+internal class FlowObserver<T>(
     lifecycleOwner: LifecycleOwner,
-    private val flow: Flow<T>,
-    private val collector: suspend (T) -> Unit
+    private val flow: Flow<T>
 ) {
-
     private var job: Job? = null
-    var observer: LifecycleEventObserver =
+    private var observer: LifecycleEventObserver =
         LifecycleEventObserver { source: LifecycleOwner, event: Lifecycle.Event ->
             when (event) {
                 Lifecycle.Event.ON_START -> {
                     job = source.lifecycleScope.launch {
-                        flow.collect { collector(it) }
+                        flow.collect()
                     }
                 }
                 Lifecycle.Event.ON_STOP -> {
@@ -44,6 +42,7 @@ class FlowObserver<T>(
                     job = null
                 }
                 else -> {
+                    // Do nothing
                 }
             }
         }
@@ -53,11 +52,8 @@ class FlowObserver<T>(
     }
 }
 
-inline fun <reified T> Flow<T>.observeOnLifecycle(
-    lifecycleOwner: LifecycleOwner,
-    noinline collector: suspend (T) -> Unit
-) = FlowObserver(lifecycleOwner, this, collector)
-
-fun <T> Flow<T>.observeInLifecycle(
+fun <T> Flow<T>.launchInLifecycle(
     lifecycleOwner: LifecycleOwner
-) = FlowObserver(lifecycleOwner, this, {})
+) {
+    FlowObserver(lifecycleOwner, this)
+}

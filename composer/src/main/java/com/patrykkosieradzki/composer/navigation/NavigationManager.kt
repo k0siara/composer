@@ -23,7 +23,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
-import com.patrykkosieradzki.composer.utils.observeInLifecycle
+import com.patrykkosieradzki.composer.utils.launchInLifecycle
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
 
@@ -83,7 +83,7 @@ fun NavigationManager.observeNavigation(
                     ?: throw IllegalStateException("Unknown navigation command")
             }
         }
-    }.observeInLifecycle(fragment.viewLifecycleOwner)
+    }.launchInLifecycle(fragment.viewLifecycleOwner)
 }
 
 fun Fragment.registerBackNavigationHandler(

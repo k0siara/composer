@@ -16,7 +16,7 @@
 package com.patrykkosieradzki.composer.core.event
 
 import androidx.lifecycle.LifecycleOwner
-import com.patrykkosieradzki.composer.utils.observeInLifecycle
+import com.patrykkosieradzki.composer.utils.launchInLifecycle
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
@@ -44,5 +44,5 @@ fun <E : UiEvent> UiEventManager<E>.observeUiEvents(
 ) {
     uiEventFlow.onEach {
         onEvent(it)
-    }.observeInLifecycle(lifecycleOwner)
+    }.launchInLifecycle(lifecycleOwner)
 }

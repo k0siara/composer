@@ -21,7 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.LifecycleOwner
-import com.patrykkosieradzki.composer.utils.observeInLifecycle
+import com.patrykkosieradzki.composer.utils.launchInLifecycle
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
 
@@ -34,7 +34,7 @@ fun <T> ComposerLifecycleAwareFlowCollector(
     val currentOnEach by rememberUpdatedState(newValue = onEach)
 
     DisposableEffect(lifecycleOwner, currentOnEach) {
-        val observer = flow.onEach { currentOnEach(it) }.observeInLifecycle(lifecycleOwner).observer
+        val observer = flow.onEach { currentOnEach(it) }.launchInLifecycle(lifecycleOwner).observer
 
         onDispose {
             lifecycleOwner.lifecycle.removeObserver(observer)
