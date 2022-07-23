@@ -17,7 +17,6 @@ package com.patrykkosieradzki.composer.core.event
 
 import androidx.lifecycle.LifecycleOwner
 import com.patrykkosieradzki.composer.utils.launchInLifecycle
-import java.util.UUID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,7 +25,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
-
+import java.util.UUID
 
 class StateFlowEvent<T> {
     private val _eventState by lazy { MutableStateFlow<EventState<T>?>(null) }
