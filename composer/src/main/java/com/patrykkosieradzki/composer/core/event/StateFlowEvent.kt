@@ -15,19 +15,33 @@
  */
 package com.patrykkosieradzki.composer.core.event
 
+import androidx.lifecycle.LifecycleOwner
+import com.patrykkosieradzki.composer.utils.launchInLifecycle
+import java.util.UUID
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 
+
 class StateFlowEvent<T> {
-    private val _eventState by lazy { MutableStateFlow<T?>(null) }
+    private val _eventState by lazy { MutableStateFlow<EventState<T>?>(null) }
     private val _firedState by lazy { MutableStateFlow(false) }
+
+    data class EventState<T>(
+        val id: String = UUID.randomUUID().toString(),
+        val eventValue: T
+    )
 
     fun flow() = _eventState.asStateFlow()
     fun firedFlow() = _firedState.asStateFlow()
 
     fun fireEvent(t: T) {
-        _eventState.update { t }
+        _eventState.update { EventState(eventValue = t) }
         _firedState.update { true }
     }
 
@@ -35,4 +49,42 @@ class StateFlowEvent<T> {
         _eventState.update { null }
         _firedState.update { false }
     }
+}
+
+fun StateFlowEvent<Unit>.fireEvent() = fireEvent(Unit)
+
+fun <T> StateFlowEvent<T>.observe(
+    lifecycleOwner: LifecycleOwner,
+    handleEvent: (T) -> Unit
+) {
+    combine(
+        firedFlow(),
+        flow(),
+        transform = { fired, state ->
+            if (fired) state else null
+        }
+    ).filterNotNull()
+        .onEach { eventState ->
+            handleEvent.invoke(eventState.eventValue)
+            onEventHandled()
+        }
+        .launchInLifecycle(lifecycleOwner)
+}
+
+fun <T> StateFlowEvent<T>.observe(
+    scope: CoroutineScope,
+    handleEvent: (T) -> Unit
+) {
+    combine(
+        firedFlow(),
+        flow(),
+        transform = { fired, state ->
+            if (fired) state else null
+        }
+    ).filterNotNull()
+        .onEach { eventState ->
+            handleEvent.invoke(eventState.eventValue)
+            onEventHandled()
+        }
+        .launchIn(scope)
 }

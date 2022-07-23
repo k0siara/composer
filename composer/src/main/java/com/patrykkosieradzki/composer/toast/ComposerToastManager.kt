@@ -15,56 +15,18 @@
  */
 package com.patrykkosieradzki.composer.toast
 
-import android.content.Context
-import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.lifecycle.LifecycleOwner
-import com.patrykkosieradzki.composer.utils.launchInLifecycle
+import com.patrykkosieradzki.composer.utils.TextModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
-
-data class ShowToastEffect(
-    val text: String,
-    val duration: Int
-)
-
-interface ToastManager {
-    val toastFlow: Flow<ShowToastEffect>
-    fun showToast(text: String, duration: Int = Toast.LENGTH_SHORT)
-}
 
 class ComposerToastManager : ToastManager {
     private val toastChannel: Channel<ShowToastEffect> = Channel(UNLIMITED)
     override val toastFlow: Flow<ShowToastEffect>
         get() = toastChannel.receiveAsFlow()
 
-    override fun showToast(text: String, duration: Int) {
-        toastChannel.trySend(ShowToastEffect(text, duration))
+    override fun showToast(textModel: TextModel, duration: ShowToastEffect.Duration) {
+        toastChannel.trySend(ShowToastEffect(textModel, duration))
     }
-}
-
-fun ToastManager.observeToastEffects(
-    activity: ComponentActivity,
-    customOnToastEffect: ((ShowToastEffect) -> Unit)? = null
-) = observeToastEffects(
-    context = activity,
-    lifecycleOwner = activity,
-    customOnToastEffect = customOnToastEffect
-)
-
-fun ToastManager.observeToastEffects(
-    context: Context,
-    lifecycleOwner: LifecycleOwner,
-    customOnToastEffect: ((ShowToastEffect) -> Unit)? = null
-) {
-    toastFlow.onEach {
-        if (customOnToastEffect != null) {
-            customOnToastEffect.invoke(it)
-        } else {
-            Toast.makeText(context, it.text, it.duration).show()
-        }
-    }.launchInLifecycle(lifecycleOwner)
 }

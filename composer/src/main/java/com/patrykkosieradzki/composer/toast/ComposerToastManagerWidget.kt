@@ -26,17 +26,22 @@ import kotlinx.coroutines.InternalCoroutinesApi
 
 @InternalCoroutinesApi
 @Composable
-fun ComposerToastHandler(
-    composerToastManager: ComposerToastManager,
+fun ComposerToastManagerWidget(
+    toastManager: ToastManager,
     context: Context = LocalContext.current,
-    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
+    onToastEffect: (ShowToastEffect) -> Unit = { showToastEffect ->
+        val text = showToastEffect.textModel.resolveText(context.resources)
+        Toast.makeText(
+            context,
+            text,
+            showToastEffect.duration.toastLengthInt
+        ).show()
+    }
 ) {
     ComposerLifecycleAwareFlowCollector(
-        flow = composerToastManager.toastFlow,
-        lifecycleOwner = lifecycleOwner
-    ) { showToastEffect ->
-        showToastEffect?.let {
-            Toast.makeText(context, it.text, it.duration).show()
-        }
-    }
+        flow = toastManager.toastFlow,
+        lifecycleOwner = lifecycleOwner,
+        onEach = { showToastEffect -> showToastEffect?.let { onToastEffect(it) } }
+    )
 }

@@ -15,29 +15,25 @@
  */
 package com.patrykkosieradzki.composer.core.event
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.LifecycleOwner
-import com.patrykkosieradzki.composer.utils.launchInLifecycle
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.onEach
 
-interface UiEvent
-
-interface UiEventManager<E : UiEvent> {
-    val uiEventFlow: Flow<E>
-    fun emitUiEvent(event: E)
-
-    companion object {
-        fun <E : UiEvent> delegate(): UiEventManager<E> {
-            return UiEventManagerImpl()
-        }
-    }
-}
-
-fun <E : UiEvent> UiEventManager<E>.observeUiEvents(
-    lifecycleOwner: LifecycleOwner,
-    onEvent: (E) -> Unit
+@Composable
+fun <T> StateFlowEventHandler(
+    event: StateFlowEvent<T>,
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
+    handleEvent: (T) -> Unit
 ) {
-    uiEventFlow
-        .onEach { onEvent(it) }
-        .launchInLifecycle(lifecycleOwner)
+    val currentHandleEvent by rememberUpdatedState(newValue = handleEvent)
+
+    LaunchedEffect(Unit, lifecycleOwner) {
+        event.observe(
+            lifecycleOwner = lifecycleOwner,
+            handleEvent = currentHandleEvent
+        )
+    }
 }

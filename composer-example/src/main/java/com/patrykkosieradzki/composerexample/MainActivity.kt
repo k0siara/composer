@@ -25,7 +25,10 @@ class MainActivity : FragmentActivity() {
 
         setupImageLoader()
 
-        toastManager.observeToastEffects(this)
+        toastManager.observeToastEffects(
+            context = this,
+            lifecycleOwner = this
+        )
     }
 
     private fun setupImageLoader() {
