@@ -41,7 +41,7 @@ sealed class Async<out T>(
 
 interface Incomplete
 
-fun <T, K> Async<T>.map(map: (T?) -> K): Async<K> {
+fun <T, K> Async<T>.mapToAsync(map: (T?) -> K): Async<K> {
     return when (this) {
         is Async.Uninitialized -> Async.Uninitialized
         is Async.Loading -> Async.Loading(map(invoke()))

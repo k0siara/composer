@@ -6,6 +6,7 @@ import com.patrykkosieradzki.composer.core.state.UiStateManager
 import com.patrykkosieradzki.composer.dialog.DialogManager
 import com.patrykkosieradzki.composer.navigation.NavigationManager
 import com.patrykkosieradzki.composer.toast.ToastManager
+import com.patrykkosieradzki.composer.utils.TextModel
 import com.patrykkosieradzki.composerexample.repositories.CoinRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -42,7 +43,12 @@ class HomeViewModel @Inject constructor(
         if (coinId != null) {
             navigateTo(HomeFragmentDirections.toCoinDetailsFragment(coinId))
         } else {
-            toastManager.showToast("Coin details unavailable")
+            toastManager.showToast(
+                ToastManager.ShowToastEffect(
+                    textModel = TextModel("Coin details unavailable"),
+                    duration = ToastManager.ShowToastEffect.Duration.Long
+                )
+            )
         }
     }
 }

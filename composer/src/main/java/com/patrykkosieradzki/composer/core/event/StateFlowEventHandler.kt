@@ -13,30 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.patrykkosieradzki.composer.toast
+package com.patrykkosieradzki.composer.core.event
 
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.LifecycleOwner
-import com.patrykkosieradzki.composer.core.ComposerLifecycleAwareFlowCollector
-import kotlinx.coroutines.InternalCoroutinesApi
 
-@InternalCoroutinesApi
 @Composable
-fun ComposerToastHandler(
-    composerToastManager: ComposerToastManager,
-    context: Context = LocalContext.current,
-    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
+fun <T> StateFlowEventHandler(
+    event: StateFlowEvent<T>,
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
+    handleEvent: (T) -> Unit
 ) {
-    ComposerLifecycleAwareFlowCollector(
-        flow = composerToastManager.toastFlow,
-        lifecycleOwner = lifecycleOwner
-    ) { showToastEffect ->
-        showToastEffect?.let {
-            Toast.makeText(context, it.text, it.duration).show()
-        }
+    val currentHandleEvent by rememberUpdatedState(newValue = handleEvent)
+
+    LaunchedEffect(Unit, lifecycleOwner) {
+        event.observe(
+            lifecycleOwner = lifecycleOwner,
+            handleEvent = currentHandleEvent
+        )
     }
 }

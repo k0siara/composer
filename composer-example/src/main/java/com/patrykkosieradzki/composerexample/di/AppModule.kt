@@ -1,6 +1,5 @@
 package com.patrykkosieradzki.composerexample.di
 
-import com.patrykkosieradzki.composer.toast.ComposerToastManager
 import com.patrykkosieradzki.composer.toast.ToastManager
 import com.patrykkosieradzki.composerexample.ApiKeyInterceptor
 import com.patrykkosieradzki.composerexample.AppConfiguration
@@ -78,7 +77,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideComposerToastManager(): ToastManager {
-        return ComposerToastManager()
+    fun provideToastManager(): ToastManager {
+        return ToastManager.delegate()
     }
 }

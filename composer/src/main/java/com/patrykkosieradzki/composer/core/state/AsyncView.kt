@@ -13,16 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.patrykkosieradzki.composer.composables
+package com.patrykkosieradzki.composer.core.state
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.patrykkosieradzki.composer.core.state.Async
 
 @Composable
-fun <T> ComposerAsyncView(
+fun <T> AsyncView(
     modifier: Modifier = Modifier,
     asyncProvider: () -> Async<T>,
     renderOnUninitialized: (@Composable () -> Unit)? = null,
