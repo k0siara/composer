@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.patrykkosieradzki.composer.core.event
+package com.patrykkosieradzki.composer.core.event.impl
 
+import com.patrykkosieradzki.composer.core.event.UiEvent
+import com.patrykkosieradzki.composer.core.event.UiEventManager
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow

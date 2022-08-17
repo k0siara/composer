@@ -16,6 +16,7 @@
 package com.patrykkosieradzki.composer.core.event
 
 import androidx.lifecycle.LifecycleOwner
+import com.patrykkosieradzki.composer.core.event.impl.UiEventManagerImpl
 import com.patrykkosieradzki.composer.utils.launchInLifecycle
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach

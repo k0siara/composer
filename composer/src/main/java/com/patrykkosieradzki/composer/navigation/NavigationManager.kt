@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
+import com.patrykkosieradzki.composer.navigation.impl.NavigationManagerImpl
 import com.patrykkosieradzki.composer.utils.launchInLifecycle
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach

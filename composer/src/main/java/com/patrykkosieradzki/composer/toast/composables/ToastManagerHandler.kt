@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.patrykkosieradzki.composer.toast
+package com.patrykkosieradzki.composer.toast.composables
 
 import android.content.Context
 import android.widget.Toast
@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.LifecycleOwner
 import com.patrykkosieradzki.composer.core.ComposerLifecycleAwareFlowCollector
+import com.patrykkosieradzki.composer.toast.ToastManager
 import kotlinx.coroutines.InternalCoroutinesApi
 
 @InternalCoroutinesApi

@@ -17,6 +17,8 @@ package com.patrykkosieradzki.composer.dialog
 
 import kotlinx.coroutines.flow.Flow
 
+// TODO: To be completely removed and replaced by a full dialog solution
+
 interface ComposerDialog
 
 interface DialogManager {

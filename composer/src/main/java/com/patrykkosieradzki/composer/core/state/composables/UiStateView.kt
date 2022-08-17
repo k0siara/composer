@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.patrykkosieradzki.composer.core.state
+package com.patrykkosieradzki.composer.core.state.composables
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import com.patrykkosieradzki.composer.core.state.UiState
+import com.patrykkosieradzki.composer.core.state.UiStateManager
 import com.patrykkosieradzki.composer.utils.asLifecycleAwareState
 
 @Composable

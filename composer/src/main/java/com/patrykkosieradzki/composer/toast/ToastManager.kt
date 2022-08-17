@@ -18,6 +18,7 @@ package com.patrykkosieradzki.composer.toast
 import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
+import com.patrykkosieradzki.composer.toast.impl.ToastManagerImpl
 import com.patrykkosieradzki.composer.utils.TextModel
 import com.patrykkosieradzki.composer.utils.launchInLifecycle
 import kotlinx.coroutines.flow.Flow
