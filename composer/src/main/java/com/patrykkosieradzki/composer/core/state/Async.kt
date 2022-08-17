@@ -22,11 +22,13 @@ sealed class Async<out T>(
 ) {
     open operator fun invoke(): T? = value
 
-    object Uninitialized : Async<Nothing>(
-        complete = false,
-        shouldLoad = true,
-        value = null
-    ), Incomplete
+    object Uninitialized :
+        Async<Nothing>(
+            complete = false,
+            shouldLoad = true,
+            value = null
+        ),
+        Incomplete
 
     data class Loading<out T>(
         private val value: T? = null
@@ -34,13 +36,16 @@ sealed class Async<out T>(
         complete = false,
         shouldLoad = false,
         value = value
-    ), Incomplete
+    ),
+        Incomplete
 
-    object Empty : Async<Nothing>(
-        complete = true,
-        shouldLoad = false,
-        value = null
-    ), Incomplete
+    object Empty :
+        Async<Nothing>(
+            complete = true,
+            shouldLoad = false,
+            value = null
+        ),
+        Incomplete
 
     data class Success<out T>(
         private val value: T
@@ -65,8 +70,8 @@ sealed class Async<out T>(
 
             val otherError = other.error
             return error::class == otherError::class &&
-                    error.message == otherError.message &&
-                    error.stackTrace.firstOrNull() == otherError.stackTrace.firstOrNull()
+                error.message == otherError.message &&
+                error.stackTrace.firstOrNull() == otherError.stackTrace.firstOrNull()
         }
 
         override fun hashCode(): Int =
