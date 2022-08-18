@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.patrykkosieradzki.composer.core.state
+package com.patrykkosieradzki.composer.core.state.composables
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.patrykkosieradzki.composer.core.state.Async
 
 @Composable
 fun <T> AsyncView(
@@ -28,12 +29,12 @@ fun <T> AsyncView(
     renderOnLoading: (@Composable (T?) -> Unit)? = null,
     renderOnEmpty: (@Composable (T?) -> Unit)? = null,
     renderOnFailure: (@Composable (Throwable, T?) -> Unit)? = null,
-    renderOnSuccess: (@Composable (T?) -> Unit)? = null
+    renderOnSuccess: (@Composable (T) -> Unit)? = null
 ) {
     val async = asyncProvider()
 
     Crossfade(
-        modifier = Modifier.then(modifier),
+        modifier = modifier,
         targetState = async.javaClass.kotlin,
         animationSpec = tween(300)
     ) { animatedAsync ->
@@ -45,7 +46,9 @@ fun <T> AsyncView(
                 renderOnLoading?.invoke(async.invoke())
             }
             Async.Success::class -> {
-                renderOnSuccess?.invoke(async.invoke())
+                if (async is Async.Success) {
+                    renderOnSuccess?.invoke(async.invoke())
+                }
             }
             Async.Empty::class -> {
                 renderOnEmpty?.invoke(async.invoke())

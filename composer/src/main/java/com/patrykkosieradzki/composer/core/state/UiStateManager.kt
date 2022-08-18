@@ -15,6 +15,7 @@
  */
 package com.patrykkosieradzki.composer.core.state
 
+import com.patrykkosieradzki.composer.core.state.impl.UiStateManagerImpl
 import kotlinx.coroutines.flow.StateFlow
 
 interface UiStateManager {

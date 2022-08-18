@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.patrykkosieradzki.composer.core.state
+package com.patrykkosieradzki.composer.core.state.impl
 
+import com.patrykkosieradzki.composer.core.state.UiState
+import com.patrykkosieradzki.composer.core.state.UiStateManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

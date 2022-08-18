@@ -17,7 +17,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.text.HtmlCompat
 import coil.compose.LocalImageLoader
 import coil.compose.rememberImagePainter
-import com.patrykkosieradzki.composer.core.state.UiStateView
+import com.patrykkosieradzki.composer.core.state.composables.UiStateView
 import com.patrykkosieradzki.composer.utils.asLifecycleAwareState
 import com.patrykkosieradzki.composerexample.R
 import com.patrykkosieradzki.composerexample.utils.toNullableString

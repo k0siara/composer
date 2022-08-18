@@ -28,7 +28,7 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun <T> StateFlow<T>.asLifecycleAwareState(
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
-) = lifecycleAwareState(lifecycleOwner, this,)
+): State<T> = lifecycleAwareState(lifecycleOwner, this)
 
 @Composable
 fun <T> lifecycleAwareState(

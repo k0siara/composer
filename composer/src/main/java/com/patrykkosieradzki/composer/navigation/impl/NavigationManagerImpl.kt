@@ -13,11 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.patrykkosieradzki.composer.navigation
+package com.patrykkosieradzki.composer.navigation.impl
 
 import android.os.Bundle
 import androidx.annotation.IdRes
 import androidx.navigation.NavDirections
+import com.patrykkosieradzki.composer.navigation.ComposerNavigationCommand
+import com.patrykkosieradzki.composer.navigation.NavigationCommand
+import com.patrykkosieradzki.composer.navigation.NavigationManager
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow

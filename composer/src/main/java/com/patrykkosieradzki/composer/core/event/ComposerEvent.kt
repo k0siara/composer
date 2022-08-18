@@ -23,11 +23,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import java.util.UUID
 
-class StateFlowEvent<T> {
+class ComposerEvent<T> {
     private val _eventState by lazy { MutableStateFlow<EventState<T>?>(null) }
     private val _firedState by lazy { MutableStateFlow(false) }
 
@@ -36,7 +37,7 @@ class StateFlowEvent<T> {
         val eventValue: T
     )
 
-    fun flow() = _eventState.asStateFlow()
+    fun eventFlow() = _eventState.map { eventState -> eventState?.eventValue }
     fun firedFlow() = _firedState.asStateFlow()
 
     fun fireEvent(t: T) {
@@ -50,39 +51,37 @@ class StateFlowEvent<T> {
     }
 }
 
-fun StateFlowEvent<Unit>.fireEvent() = fireEvent(Unit)
+fun ComposerEvent<Unit>.fireEvent() = fireEvent(Unit)
 
-fun <T> StateFlowEvent<T>.observe(
+fun <T> ComposerEvent<T>.observe(
     lifecycleOwner: LifecycleOwner,
     handleEvent: (T) -> Unit
 ) {
     combine(
         firedFlow(),
-        flow(),
-        transform = { fired, state ->
-            if (fired) state else null
-        }
-    ).filterNotNull()
-        .onEach { eventState ->
-            handleEvent.invoke(eventState.eventValue)
+        eventFlow(),
+        transform = { fired, event -> if (fired) event else null }
+    )
+        .filterNotNull()
+        .onEach { event ->
+            handleEvent.invoke(event)
             onEventHandled()
         }
         .launchInLifecycle(lifecycleOwner)
 }
 
-fun <T> StateFlowEvent<T>.observe(
+fun <T> ComposerEvent<T>.observe(
     scope: CoroutineScope,
     handleEvent: (T) -> Unit
 ) {
     combine(
         firedFlow(),
-        flow(),
-        transform = { fired, state ->
-            if (fired) state else null
-        }
-    ).filterNotNull()
-        .onEach { eventState ->
-            handleEvent.invoke(eventState.eventValue)
+        eventFlow(),
+        transform = { fired, event -> if (fired) event else null }
+    )
+        .filterNotNull()
+        .onEach { event ->
+            handleEvent.invoke(event)
             onEventHandled()
         }
         .launchIn(scope)

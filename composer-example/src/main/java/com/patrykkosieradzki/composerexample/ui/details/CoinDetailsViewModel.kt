@@ -3,7 +3,7 @@ package com.patrykkosieradzki.composerexample.ui.details
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.patrykkosieradzki.composer.core.event.StateFlowEvent
+import com.patrykkosieradzki.composer.core.event.ComposerEvent
 import com.patrykkosieradzki.composer.core.state.UiState
 import com.patrykkosieradzki.composer.core.state.UiStateManager
 import com.patrykkosieradzki.composer.extensions.launchWithExceptionHandler
@@ -23,7 +23,7 @@ class CoinDetailsViewModel @Inject constructor(
     NavigationManager by NavigationManager.delegate() {
 
     val coin: MutableStateFlow<CoinResponse?> = MutableStateFlow(null)
-    val testEvent = StateFlowEvent<Int>()
+    val testEvent = ComposerEvent<Int>()
 
     fun initialize(coinId: String) {
         viewModelScope.launchWithExceptionHandler(

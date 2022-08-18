@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.patrykkosieradzki.composer.core.event
+package com.patrykkosieradzki.composer.core.event.composables
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,16 +21,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.LifecycleOwner
+import com.patrykkosieradzki.composer.core.event.ComposerEvent
+import com.patrykkosieradzki.composer.core.event.observe
 
 @Composable
-fun <T> StateFlowEventHandler(
-    event: StateFlowEvent<T>,
+fun <T> ComposerEventHandler(
+    event: ComposerEvent<T>,
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     handleEvent: (T) -> Unit
 ) {
     val currentHandleEvent by rememberUpdatedState(newValue = handleEvent)
 
-    LaunchedEffect(Unit, lifecycleOwner) {
+    LaunchedEffect(lifecycleOwner) {
         event.observe(
             lifecycleOwner = lifecycleOwner,
             handleEvent = currentHandleEvent

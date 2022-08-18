@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import coil.compose.LocalImageLoader
 import coil.compose.rememberImagePainter
-import com.patrykkosieradzki.composer.core.state.UiStateView
+import com.patrykkosieradzki.composer.core.state.composables.UiStateView
 import com.patrykkosieradzki.composerexample.model.CoinResponse
 import com.patrykkosieradzki.composerexample.utils.toNullableString
 import java.math.RoundingMode
